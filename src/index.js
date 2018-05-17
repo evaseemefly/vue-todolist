@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import App from './app.vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
+import $ from 'jquery'
+// require('bootstrap-loader')
+// require('bootstrap')
 
 const root=document.createElement("div")
 document.body.appendChild(root)

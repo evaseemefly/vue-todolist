@@ -1,11 +1,16 @@
 
 <template>
-<div id="test">
-    {{text}}
+<div id="app">
+    <Header></Header>
+    <MyContent></MyContent>
+    <Footer></Footer>
 </div>    
 </template>
 
 <script>
+import Header from "./layout/header.vue";
+import MyContent from "./layout/content.vue";
+import Footer from "./layout/footer.vue";
 export default {
     data () {
         return {
