@@ -3,7 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HTMLPlugin = require('html-webpack-plugin')  //这个插件需要依赖 webpack 插件
 const ExtractPlugin = require('extract-text-webpack-plugin')
-
+const VueLoaderPlugin=require('vue-loader/lib/plugin')
 
 const isDev = process.env.NODE_ENV === 'development' //我们在package.json中设置的环境变量，全部是存放在process.env中的
 
@@ -86,7 +86,8 @@ const config = {
             "$": "jquery",
             "jQuery": "jquery",
             "window.jQuery": "jquery"
-        })
+        }),
+        new VueLoaderPlugin()
 
     ]
 

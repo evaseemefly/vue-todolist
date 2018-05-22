@@ -1,16 +1,14 @@
-
 <template>
 <div id="app">
+    <Search></Search>
     <Header></Header>
-    <MyContent></MyContent>
-    <Footer></Footer>
 </div>    
 </template>
 
 <script>
 import Header from "./layout/header.vue";
-import MyContent from "./layout/content.vue";
-import Footer from "./layout/footer.vue";
+import Search from "./layout/search.vue";
+// import $ from 'jquery'
 export default {
     data () {
         return {
@@ -20,10 +18,5 @@ export default {
 }
 </script>
 
-<style>
-#test{
-    color: red;
-}
-</style>
 
 
