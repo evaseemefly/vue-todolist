@@ -1,8 +1,8 @@
-
 const path = require('path')
 const webpack = require('webpack')
 const HTMLPlugin = require('html-webpack-plugin')  //这个插件需要依赖 webpack 插件
-const ExtractPlugin = require('extract-text-webpack-plugin')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const VueLoaderPlugin=require('vue-loader/lib/plugin')
 
 const isDev = process.env.NODE_ENV === 'development' //我们在package.json中设置的环境变量，全部是存放在process.env中的
@@ -33,14 +33,22 @@ const config = {
                 loader: 'babel-loader'
             },
             //加载 css 文件
+            //webpack4.0+不能再使用ExtractTextPlugin
+            // {
+            //     test: /\.css$/,
+            //     // use: [
+            //     //     'style-loader',    //将css文件写到html代码里
+            //     //     'css-loader'       //css 的loader
+            //     // ]
+            //     loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            // },
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',    //将css文件写到html代码里
-                    'css-loader'       //css 的loader
+                  MiniCssExtractPlugin.loader,
+                  "css-loader"
                 ]
-            },
-
+              },
             //加载图片
             {
                 test: /\.(gif|jpg|jpeg|png|svg)$/,
@@ -57,18 +65,23 @@ const config = {
 
             //boostrap相关
             {
-                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
-            }, {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/octet-stream'
-            }, {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file'
-            }, {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=image/svg+xml"
-            },
+                test: /\.(eot|woff|woff2|svg|ttf)([\?]?.*)$/,
+                loader: "file-loader"
+            }
+
+            // {
+            //     test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: 'url?limit=10000&mimetype=application/font-woff'
+            // }, {
+            //     test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: 'url?limit=10000&mimetype=application/octet-stream'
+            // }, {
+            //     test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: 'file'
+            // }, {
+            //     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: "url?limit=10000&mimetype=image/svg+xml"
+            // },
         ],
 
     },
@@ -87,10 +100,22 @@ const config = {
             "jQuery": "jquery",
             "window.jQuery": "jquery"
         }),
-        new VueLoaderPlugin()
-
+        new VueLoaderPlugin(),
+        // new ExtractTextPlugin('styles.css'),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+          }),
+          new webpack.LoaderOptionsPlugin({
+            options: {
+                postcss: function() {
+                    return [require('autoprefixer')];
+                }
+            }
+        }),
     ]
-
 }
 
 config.devServer = {

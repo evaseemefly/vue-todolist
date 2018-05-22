@@ -1,13 +1,21 @@
 import Vue from 'vue'
 import App from './app.vue'
 import $ from 'jquery'
+// import 'bootstrap/dist/css/bootstrap.min.css'  
+// import 'bootstrap/dist/js/bootstrap.min'  
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'bootstrap/dist/js/bootstrap.min'
-
+// import 'bootstrap/dist/css/bootstrap.css' 
 // import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap/dist/js/bootstrap.js'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
+// import './components/css/background.css'
+// import './components/css/bootstrap/bootstrap.min.css'
 
+import './components/css/datetimepicker/bootstrap-datetimepicker.min.css'
+// import './components/js/bootstrap/bootstrap.js'
+import './components/js/datetimepicker/bootstrap-datetimepicker.js'
+import './components/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js'
 // require('bootstrap-loader')
 // require('bootstrap')
 

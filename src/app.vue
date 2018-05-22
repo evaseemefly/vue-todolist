@@ -10,11 +10,16 @@ import Header from "./layout/header.vue";
 import Search from "./layout/search.vue";
 // import $ from 'jquery'
 export default {
-    data () {
-        return {
-            text:'abc'
-        }
+    //注意：需要在componetns中声明子组件，才能在上面显示
+    components:{
+        Header,
+        Search
     }
+    // data () {
+    //     return {
+    //         text:'abc'
+    //     }
+    // }
 }
 </script>
 
