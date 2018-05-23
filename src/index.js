@@ -1,4 +1,8 @@
+// import .dist from 'vue'
+// require('/vue/vue.js')
+// import * from '/vue/vue.js'
 import Vue from 'vue'
+// import 'vue/dist/vue.js'
 import App from './app.vue'
 import $ from 'jquery'
 // import 'bootstrap/dist/css/bootstrap.min.css'  
@@ -29,3 +33,4 @@ new Vue({
     //     h(App);
     // }
 }).$mount(root)     //$mount为vue中的手动挂载
+console.log(process.env.NODE_ENV)

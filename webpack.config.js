@@ -13,7 +13,7 @@ const config = {
     // devServer:{
 
     // },
-    // target:'web',
+    target:'web',
     entry: path.join(__dirname, 'src/index.js'),
     output: {
         filename: 'bundle.js',
@@ -90,7 +90,9 @@ const config = {
             //下面这个插件很有用：在这里定义之后，我们就可以在项目的js代码中，直接调用 `process.evn.NODE_ENV` 来判断环境
             //比如说，开发环境中，会打印很多错误信息，但是这些内容并不需要放在生产环境中，这时就可以用到环境的判断
             'process.evn': {
-                NODE_ENV: isDev ? '"development"' : '"production"'
+                // NODE_ENV:'development'
+                // NODE_ENV: isDev ? '"development"' : '"production"'
+                NODE_ENV:JSON.stringify('development')
             }
         }),
         new HTMLPlugin(),
@@ -119,7 +121,7 @@ const config = {
 }
 
 config.devServer = {
-    port: 8000,
+    port: 8011,
     host: '0.0.0.0',  //注意，ip地址是字符串
     overlay: { // 如果有任何的错误，就让它显示到网页上
         errors: true
@@ -127,5 +129,6 @@ config.devServer = {
     //open:true,
     hot: true
 }
-
+// config.devtool = '#cheap-module-eval-source-map'
+config.devtool = 'source-map'
 module.exports = config

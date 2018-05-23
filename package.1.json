@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js"
+    
+    "start": "webpack-dev-server"
   },
   "author": "",
   "license": "ISC",
