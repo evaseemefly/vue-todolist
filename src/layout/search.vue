@@ -41,7 +41,7 @@
 							</div>
 							<div class="col-md-2" style="text-align:left;">
 								<!-- <button type="submit" id="btn_search" type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button> -->
-								<button type="submit" id="btn_search" style="margin-left:50px" v-on:click="summit()" class="btn btn-primary">查询</button>
+								<button type="button" id="btn_search" style="margin-left:50px" v-on:click="summit()" class="btn btn-primary">查询</button>
 							</div>
 						</div>
 					</form>
@@ -55,6 +55,14 @@
 <script>
 	// import vue from 'vue'
 	export default {
+		//父组件传入的参数
+		props:['searchResult'],
+		// props:{
+		// 	searchResult:{
+		// 		type:,
+		// 		required:true //参数一定要传入
+		// 	}
+		// },
 		data: function () {
 			return {
 				selected_user: 1,
@@ -141,33 +149,21 @@
 			summit: function () {
 				var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
 				//注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
-				var self = this;
-				// $.get(search_url, { user_id: self.selected_user, group_id: self.selected_group },
-				// $.get(search_url, {  },
-				//     function (data) {
-				//         //从后台返回的data重新存入data中
-				//         //根据从后台范围的data，执行加载值班信息表的操作
-				//         alert(data);
-				//     });
-
+				var myself = this;
 				$.ajax({
 					url: search_url,
 					type: 'GET',
 					data: {
-						user_id: self.selected_user,
-						group_id: self.selected_group,
-						selected_date: self.selected_date
+						user_id: myself.selected_user,
+						group_id: myself.selected_group,
+						selected_date: myself.selected_date
 					},
 					async: false,
 					success: function (res) {
-						alert(res);
+						// alert(res);
+						myself.searchResult=res;
 					}
 				})
-				// $.get("test.cgi", { name: "John", time: "2pm" },
-				//     function (data) {
-				//         alert("Data Loaded: " + data);
-				//     });
-				// alert("成功");
 			},
 			getSchedulelist: function () {
 

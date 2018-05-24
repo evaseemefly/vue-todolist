@@ -23,9 +23,15 @@
 
 <<script>
     export default{
+		props:['searchResult'],
         data(){
 
         },
+		watch:{
+			searchResult:function(new_val,old_val){
+				alert(new_val);
+			}
+		},
         methods:{   
 
             getSelectDataAndPost:function(params, code, url) {
