@@ -1,27 +1,26 @@
 <template>
-<div id="app">
-    <Search></Search>
-    <Header></Header>
-</div>    
+    <div id="app">
+        <search></search>
+        <mycontent></mycontent>
+    </div>
 </template>
 
 <script>
-import Header from "./layout/header.vue";
-import Search from "./layout/search.vue";
-// import $ from 'jquery'
-export default {
-    //注意：需要在componetns中声明子组件，才能在上面显示
-    components:{
-        Header,
-        Search
+    // import Header from "./layout/header.vue";
+    import Search from "./layout/search.vue";
+    import mycontent from "./layout/content.vue";
+    // import $ from 'jquery'
+    export default {
+        //注意：需要在componetns中声明子组件，才能在上面显示
+        components: {
+            // Header,
+            Search,
+            mycontent
+        }
+        // data () {
+        //     return {
+        //         text:'abc'
+        //     }
+        // }
     }
-    // data () {
-    //     return {
-    //         text:'abc'
-    //     }
-    // }
-}
 </script>
-
-
-
