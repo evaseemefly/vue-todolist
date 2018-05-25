@@ -22,6 +22,7 @@
 </template>
 
 <<script>
+import bus from '../assets/eventBus';
     export default{
 		props:['searchResult'],
         data(){
@@ -199,7 +200,12 @@
 
         },
         mounted:function(){
-
+			// bus.$on('on-message',function(msg){
+			// 	alert(msg);
+			// });
+			bus.$on('on-searchresult',function(msg){
+				console.log(msg);
+			})
         }
     };
 

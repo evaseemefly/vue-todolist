@@ -2,7 +2,7 @@
 12:13:02 08:56:13 */
 
 <template>
-	<div class="container">
+	
 		<div class="panel-body" style="padding-bottom:0px;">
 			<div id="panel_search" class="panel panel-primary">
 				<div class="panel-heading">查询条件</div>
@@ -49,10 +49,11 @@
 			</div>
 
 		</div>
-	</div>
+	
 </template>
 
 <script>
+	import bus from '../assets/eventBus';
 	// import vue from 'vue'
 	export default {
 		//父组件传入的参数
@@ -70,7 +71,8 @@
 				selected_group: 2,
 				options_group: [],
 				selected_date: null,
-				dict_users: {}
+				dict_users: {},
+				searchResult:null
 			};
 		},
 		watch: {
@@ -146,6 +148,9 @@
 				this.selected = 3;
 				this.selected_group = 2;
 			},
+			testsummit:function(){
+				bus.$emit('on-message','search组件的消息');
+			},
 			summit: function () {
 				var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
 				//注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
@@ -162,6 +167,7 @@
 					success: function (res) {
 						// alert(res);
 						myself.searchResult=res;
+						bus.$emit('on-searchresult',res);
 					}
 				})
 			},
@@ -172,6 +178,7 @@
 			getgroupuser() {
 				// var self = this;
 				var data_get = null;
+				var myself=this;
 				// var temp=this;
 				var get_groupAnduser_url = 'http://127.0.0.1:8000/duty/grouplist/';
 				var post_data = {
@@ -191,10 +198,11 @@
                           1、遍历一级，存入group中
                           2、
                         */
-						
 						data_get = data;
+						
 					}
-
+				}).then(function(data){
+					
 				});
 				// dict_users = {};
 				var options_group = this.options_group;

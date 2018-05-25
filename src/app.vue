@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" class="container">    
         <search></search>
         <mycontent></mycontent>
     </div>
@@ -9,6 +9,10 @@
     // import Header from "./layout/header.vue";
     import Search from "./layout/search.vue";
     import mycontent from "./layout/content.vue";
+
+    // var bus=new Vue({
+        
+    // });
     // import $ from 'jquery'
     export default {
         data(){
