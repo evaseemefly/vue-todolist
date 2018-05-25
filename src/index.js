@@ -12,6 +12,8 @@ import $ from 'jquery'
 // import 'bootstrap/dist/css/bootstrap.css' 
 // import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import './components/css/bootstrapExt/table/bootstrap-table.css'
+import './components/css/bootstrapExt/editable/bootstrap-editable.css'
 import 'bootstrap/dist/js/bootstrap.js'
 // import './components/css/background.css'
 // import './components/css/bootstrap/bootstrap.min.css'
@@ -20,6 +22,11 @@ import './components/css/datetimepicker/bootstrap-datetimepicker.min.css'
 // import './components/js/bootstrap/bootstrap.js'
 import './components/js/datetimepicker/bootstrap-datetimepicker.js'
 import './components/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js'
+
+import './components/js/bootstrapExt/table/bootstrap-table.js'
+import './components/js/bootstrapExt/editable/bootstrap-editable.js'
+
+
 // require('bootstrap-loader')
 // require('bootstrap')
 

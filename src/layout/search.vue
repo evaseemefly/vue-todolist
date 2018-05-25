@@ -155,21 +155,37 @@
 				var search_url = 'http://127.0.0.1:8000/duty/schedulelist/';
 				//注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
 				var myself = this;
-				$.ajax({
-					url: search_url,
-					type: 'GET',
-					data: {
+				/*
+					此处修改如下：
+						1、将查询的条件交给兄弟组件content
+						2、兄弟组件通过bootstrap-table 的load方法进行加载，
+						3、不在本组件内进行ajax处理
+
+				*/
+				var search_temp={
 						user_id: myself.selected_user,
 						group_id: myself.selected_group,
 						selected_date: myself.selected_date
-					},
-					async: false,
-					success: function (res) {
-						// alert(res);
-						myself.searchResult=res;
-						bus.$emit('on-searchresult',res);
-					}
-				})
+					};
+				bus.$emit('on-loadTable',search_url,search_temp);
+
+				// 以下注释掉，不再使用，交给content兄弟组件
+
+				// $.ajax({
+				// 	url: search_url,
+				// 	type: 'GET',
+				// 	data: {
+				// 		user_id: myself.selected_user,
+				// 		group_id: myself.selected_group,
+				// 		selected_date: myself.selected_date
+				// 	},
+				// 	async: false,
+				// 	success: function (res) {
+				// 		// alert(res);
+				// 		myself.searchResult=res;
+				// 		bus.$emit('on-searchresult',res);
+				// 	}
+				// })
 			},
 			getSchedulelist: function () {
 

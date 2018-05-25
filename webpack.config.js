@@ -57,7 +57,10 @@ const config = {
                         loader: 'url-loader',
                         options: {  //通过 optons 参数配置上面这个 url-loader 
                             limit: 1024, //如果图片的小于1024，则将图片转成 base64的代码，直接写到代码里去，减少http请求
-                            name: '[name]-smyh.[ext]'  //设置图片的文件名。smyh表示所有文件名中都带有这个字符，[ext]指的是文件格式
+                            // name: '[name]-smyh.[ext]',  //设置图片的文件名。smyh表示所有文件名中都带有这个字符，[ext]指的是文件格式
+                            name: '[name].[ext]',
+                            publicPath: "../images/",
+                            outputPath: "images/"
                         }
                     }
                 ]

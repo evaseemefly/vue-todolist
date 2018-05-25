@@ -23,10 +23,21 @@
 
 <<script>
 import bus from '../assets/eventBus';
+// import '../components/bootstrapExt/datetimepicker/bootstrap-datetimepicker.min.css'
+// import '../components/css/bootstrapExt/table/bootstrap-table.css'
+// import '../components/css/bootstrapExt/editable/bootstrap-editable.css'
+import '../components/js/common/dateFormart.js'
+import '../components/js/common/moment.js'
+// import '../components/js/bootstrapExt/table/bootstrap-table.js'
+// import '../components/js/bootstrapExt/editable/bootstrap-editable.js'
+
     export default{
 		props:['searchResult'],
+		
         data(){
-
+			return{
+				schedulelist:[]
+			}
         },
 		watch:{
 			searchResult:function(new_val,old_val){
@@ -34,8 +45,95 @@ import bus from '../assets/eventBus';
 			}
 		},
         methods:{   
+			
+			loadTable:function(url,data){
+				var myself=this;
+				$("#tb_user").bootstrapTable({
+				toolbar: "#toolbar",
+				idField: "Id",
+				pagination: true,
+				pageNumber: 1,
+				pageSize: 10,
+				showRefresh: true,
+				clickToSelect: true, //设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
+				search: true,
+				// striped: true,
+				// clickToSelect: true,
+				striped: true, //使表格带有条纹  
+				queryParams: function (param) {
+					var query_data = {
+						pageSize: param.pageSize,
+						pageNumber: param.pageNumber,
+						username: '',
+						groupname: '',
+						groupid: '',
+						dutyid: '',
+						nowdate: ''
+					};
+					return query_data;
+				},
+				method: 'GET',
+				//url: "data_schedule.json",
+				url: 'http://127.0.0.1:8000/duty/schedulelist/',
+				//url:'http://127.0.0.1:8000/duty/schedulelist/'+'?format=json',
+				columns: [{
+						checkbox: true,
+						rowspan: 1
+					},
+					{
+						//由于是复合表头，注意隐藏的元素若复合表头占了两行，需要填满该列
+						field: "id",
+						title: "id",
+						// visible: false,
+						rowspan: 1
+					},
+					{
+						field: "dutydate",
+						title: "值班日期",
+						// visible: false,
+						rowspan: 1,
+						editable: true,
+						// formatter: tablerowDate
+					},
+					{
+						field: "department",
+						title: "组",
+						rowspan: 1,
+						editable: false,
+						// formatter: tablerowDepartmentEdit
+					},
+					{
+						field: "duty",
+						title: "岗位",
+						rowspan: 1,
+						editable: true,
+						// formatter: tablerowDutyEdit
+					},
+					{
+						field: "MainUser",
+						title: "值班员",
+						// visible: false,
+						rowspan: 1,
+						editable: true,
+						// formatter: tablerowUserEdit
+					}
 
-            getSelectDataAndPost:function(params, code, url) {
+				],
+				onEditableSave: function (field, row, oldValue, $el) {
+
+				},
+				onClickRow: function (row, $element) {
+					curRow = row;
+				},
+				//加载成功后执行
+				onLoadSuccess: function (aa, bb, cc) {
+					init_control();					
+				}
+
+			});
+			},
+
+            getSelectDataAndPost:function(url,code ,params=null ) {
 			//获取修改的信息并提交
 			//console.log(params);
 			var duty_data = new Object();
@@ -203,10 +301,22 @@ import bus from '../assets/eventBus';
 			// bus.$on('on-message',function(msg){
 			// 	alert(msg);
 			// });
-			bus.$on('on-searchresult',function(msg){
-				console.log(msg);
+			var myself=this;
+			bus.$on('on-loadTable',function(url,data){
+				/*
+					由兄弟组件search触发本组件的on-loadTable方法，实现如下操作：
+						1、获取传入的:
+							url,
+							data
+						2、使用bootstrap-table的load方法请求后台
+				*/
+				console.log(url);
+				console.log(data);
+				myself.loadTable(url,data);
+				
 			})
         }
     };
 
 </script>
+
