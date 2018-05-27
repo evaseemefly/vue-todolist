@@ -46,7 +46,7 @@ import '../components/js/common/moment.js'
 		},
         methods:{   
 			
-			loadTable:function(url,data){
+			loadTable:function(url,search_condition){
 				var myself=this;
 				$("#tb_user").bootstrapTable({
 				toolbar: "#toolbar",
@@ -61,15 +61,7 @@ import '../components/js/common/moment.js'
 				// clickToSelect: true,
 				striped: true, //使表格带有条纹  
 				queryParams: function (param) {
-					var query_data = {
-						pageSize: param.pageSize,
-						pageNumber: param.pageNumber,
-						username: '',
-						groupname: '',
-						groupid: '',
-						dutyid: '',
-						nowdate: ''
-					};
+					var query_data =search_condition;
 					return query_data;
 				},
 				method: 'GET',
@@ -93,21 +85,21 @@ import '../components/js/common/moment.js'
 						// visible: false,
 						rowspan: 1,
 						editable: true,
-						// formatter: tablerowDate
+						formatter: myself.tablerowDate
 					},
 					{
 						field: "department",
 						title: "组",
 						rowspan: 1,
 						editable: false,
-						// formatter: tablerowDepartmentEdit
+						formatter: myself.tablerowDepartmentEdit
 					},
 					{
 						field: "duty",
 						title: "岗位",
 						rowspan: 1,
 						editable: true,
-						// formatter: tablerowDutyEdit
+						formatter: myself.tablerowDutyEdit
 					},
 					{
 						field: "MainUser",
@@ -115,7 +107,7 @@ import '../components/js/common/moment.js'
 						// visible: false,
 						rowspan: 1,
 						editable: true,
-						// formatter: tablerowUserEdit
+						formatter: myself.tablerowUserEdit
 					}
 
 				],
@@ -127,7 +119,7 @@ import '../components/js/common/moment.js'
 				},
 				//加载成功后执行
 				onLoadSuccess: function (aa, bb, cc) {
-					init_control();					
+					myself.init_control();					
 				}
 
 			});
@@ -226,13 +218,13 @@ import '../components/js/common/moment.js'
 			return reuslt;
 		},
         init_control() {
-
+			var myself=this;
 			var select_user_source = [];
 			var select_duty_source = [];
 			//下拉框向后台传入的数据
-			var user_data = new Object();
+			// var user_data = new Object();
 			// 1 ajax请求后台获取当前组的人员下拉框中成员
-			user_data.group_id = [group_id];			
+			// user_data.group_id = [group_id];			
 
 			$('.my_select_user').editable({
 				type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
@@ -256,7 +248,7 @@ import '../components/js/common/moment.js'
 							获取value（option的key）
 						2、创建向后台提交的数据
 					*/
-					getSelectDataAndPost(params, 'user', 'http://127.0.0.1:8000/duty/modity/');				
+					myself.getSelectDataAndPost(params, 'user', 'http://127.0.0.1:8000/duty/modity/');				
 
 				},
 				mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
@@ -281,7 +273,7 @@ import '../components/js/common/moment.js'
 					 流程：
 
 					*/
-					getSelectDataAndPost(params, 'duty', 'http://127.0.0.1:8000/duty/modity/');
+					myself.getSelectDataAndPost(params, 'duty', 'http://127.0.0.1:8000/duty/modity/');
 					//console.log(params);
 				},
 				mode: "inline", //编辑框的模式：支持popup和inline两种模式，默认是popup            
