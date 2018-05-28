@@ -36,16 +36,32 @@ import '../components/js/common/moment.js'
 		
         data(){
 			return{
-				schedulelist:[]
+				schedulelist:[],				
+				select_user_dict:{},	//值班人员字典
+				select_duty_dict:{},	//岗位职责字典
+				select_user_source:[],  //值班人员下拉框
+				select_duty_source:[],	//岗位下拉框
+				group_id:3,				//群组id
+				user_data:{},			//值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
+				curRow:{}				//当前选中行
 			}
         },
 		watch:{
 			searchResult:function(new_val,old_val){
-				alert(new_val);
+				// alert(new_val);
 			}
 		},
         methods:{   
 			
+			clearData:function () {
+				// Object.assign(this.$data,this.$options.data());			
+				Object.assign(this.$data, this.$options.data());
+				//销毁table
+				$("#tb_user").bootstrapTable('destroy');
+				// this.$forceUpdated();
+	
+			},
+
 			loadTable:function(url,search_condition){
 				var myself=this;
 				$("#tb_user").bootstrapTable({
@@ -115,7 +131,7 @@ import '../components/js/common/moment.js'
 
 				},
 				onClickRow: function (row, $element) {
-					curRow = row;
+					this.curRow = row;
 				},
 				//加载成功后执行
 				onLoadSuccess: function (aa, bb, cc) {
@@ -129,10 +145,10 @@ import '../components/js/common/moment.js'
 			//获取修改的信息并提交
 			//console.log(params);
 			var duty_data = new Object();
-			duty_data.id = curRow.id;
+			duty_data.id = this.curRow.id;
 			// 以下信息是对于修改非用户时提交时所用的
 			if (code == 'duty') {
-				duty_data.did = curRow.rDepartmentDuty.did.did;
+				duty_data.did = this.curRow.rDepartmentDuty.did.did;
 				duty_data.duid = params.value;
 				//duty_data.duid = curRow.rDepartmentDuty.duid.duid;
 			} else if (code == 'user') {
@@ -190,7 +206,7 @@ import '../components/js/common/moment.js'
 				reuslt = "<a href=\"#\" class=\"my_select_duty\">" + "-" + "</a>";
 			} else {
 				duty_id = row.rDepartmentDuty.duid.duid;
-				select_value = select_duty_dict[duty_id];
+				select_value = this.select_duty_dict[duty_id];
 				reuslt = "<a href=\"#\" class=\"my_select_duty\">" + select_value + "</a>";
 			}
 
@@ -205,30 +221,102 @@ import '../components/js/common/moment.js'
 			*/
 			//获取用户id
 			var user_id;
-			var select_value;
-			var reuslt;
-			if (row.id == -999) {
+			var select_value=null;
+			var reuslt=null;
+			if (row.id === -999) {
 				reuslt = "<a href=\"#\" class=\"my_select_user\">" + "-" + "</a>";
 			} else {
 				user_id = row.user.uid;
-				select_value = select_user_dict[user_id];
+				// alert(user_id);
+				// console.log(user_id);
+				select_value = this.select_user_dict[user_id];
 				reuslt = "<a href=\"#\" class=\"my_select_user\">" + select_value + "</a>";
 			}
 			//2 记录动作
 			return reuslt;
 		},
+		init_User_Select(){
+			//下拉框向后台传入的数据
+			// var user_data = new Object();
+			// var myself=this;
+			var get_url='http://127.0.0.1:8000/duty/userlist/';
+			// 1 ajax请求后台获取当前组的人员下拉框中成员
+			this.user_data.group_id = [this.group_id];
+			var myself=this;
+			$.ajax({
+				type: "GET",
+				//url: "data_user.json",
+				url: get_url,
+				processData: true,
+
+				data: myself.user_data,
+				dataType: "json",
+				async: false,
+				traditional: true, //data中传入数组
+				success: function (data) {
+					$.each(data, function (index, obj) {
+						// console.log(obj);
+						// console.log(myself);
+						//修改下拉框
+						myself.select_user_source.push({
+							value: obj.uid,
+							text: obj.username
+						})
+						//刷新人员字典
+						myself.select_user_dict[obj.uid] = obj.username;
+					});
+
+				}
+			});
+		},
+		init_Duty_Select(){
+			var myself=this;
+			//2 ajax请求后台获取当前组的岗位			
+			$.ajax({
+				type: "GET",
+				//url: "data_duty.json",
+				url: 'http://127.0.0.1:8000/duty/dutylist/',
+				processData: true,
+				dataType: "json",
+				async: false,
+				data: myself.user_data,
+				traditional: true, //data中传入数组
+				success: function (data) {
+					$.each(data, function (index, obj) {
+						// console.log(obj);
+						console.log(myself);
+						myself.select_duty_source.push({
+							value: obj.duid,
+							text: obj.dutyname
+						})
+						//刷新岗位字典
+						myself.select_duty_dict[obj.duid] = obj.dutyname;
+					});
+
+				}
+			});
+		},
+
+		init_Select(){
+			// 1、通过ajax请求对 用户 及 岗位 的下拉框进行初始化
+			this.init_User_Select();
+			this.init_Duty_Select();
+		},
+
         init_control() {
 			var myself=this;
-			var select_user_source = [];
-			var select_duty_source = [];
+			
+			// var select_user_source = [];
+			// var select_duty_source = [];
 			//下拉框向后台传入的数据
 			// var user_data = new Object();
 			// 1 ajax请求后台获取当前组的人员下拉框中成员
-			// user_data.group_id = [group_id];			
+			// user_data.group_id = [group_id];		
 
+			
 			$('.my_select_user').editable({
 				type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
-				source: select_user_source,
+				source: myself.select_user_source,
 				title: "选择人员", //编辑框的标题
 				disabled: false, //是否禁用编辑
 				emptytext: "空文本", //空值的默认文本
@@ -256,7 +344,7 @@ import '../components/js/common/moment.js'
 
 			$('.my_select_duty').editable({
 				type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
-				source: select_duty_source,
+				source: myself.select_duty_source,
 				title: "选择岗位", //编辑框的标题
 				disabled: false, //是否禁用编辑
 				emptytext: "空文本", //空值的默认文本
@@ -302,10 +390,19 @@ import '../components/js/common/moment.js'
 							data
 						2、使用bootstrap-table的load方法请求后台
 				*/
-				console.log(url);
-				console.log(data);
+				// console.log(url);
+				// console.log(data);
+				this.user_data=new Object();
+				//提取到外侧，不放在loadTable中调用了
+				myself.init_Select();
+				// myself.init_control();
+				//直接调用loadTable方法，loadTable最后会执行init_control()方法
 				myself.loadTable(url,data);
 				
+			});
+			bus.$on('on-clearData',function () {
+				myself.clearData();
+
 			})
         }
     };

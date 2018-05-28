@@ -83,7 +83,7 @@
     
                         */
 			selected_date:function(new_val,old_val){
-				alert(new_val);
+				// alert(new_val);
 			},
 			selected_user: function (new_val, old_val) {
 
@@ -167,6 +167,9 @@
 						group_id: myself.selected_group,
 						selected_date: myself.selected_date
 					};
+				//每次提交时，先清空content组件的data
+				bus.$emit('on-clearData');
+				
 				bus.$emit('on-loadTable',search_url,search_temp);
 
 				// 以下注释掉，不再使用，交给content兄弟组件
