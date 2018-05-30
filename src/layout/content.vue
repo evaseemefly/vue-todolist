@@ -131,7 +131,7 @@ import '../components/js/common/moment.js'
 
 				},
 				onClickRow: function (row, $element) {
-					this.curRow = row;
+					myself.curRow = row;
 				},
 				//加载成功后执行
 				onLoadSuccess: function (aa, bb, cc) {
@@ -141,17 +141,17 @@ import '../components/js/common/moment.js'
 			});
 			},
 
-            getSelectDataAndPost:function(url,code ,params=null ) {
+            getSelectDataAndPost:function(params,code ,url=null ) {
 			//获取修改的信息并提交
 			//console.log(params);
 			var duty_data = new Object();
 			duty_data.id = this.curRow.id;
 			// 以下信息是对于修改非用户时提交时所用的
-			if (code == 'duty') {
+			if (code === 'duty') {
 				duty_data.did = this.curRow.rDepartmentDuty.did.did;
 				duty_data.duid = params.value;
 				//duty_data.duid = curRow.rDepartmentDuty.duid.duid;
-			} else if (code == 'user') {
+			} else if (code === 'user') {
 				duty_data.uid = params.value;
 			}
 			//duty_data.modity_id = params.value;
@@ -388,11 +388,14 @@ import '../components/js/common/moment.js'
 						1、获取传入的:
 							url,
 							data
-						2、使用bootstrap-table的load方法请求后台
+						2、获取data中的group_id，并赋值给this.
+						3、使用bootstrap-table的load方法请求后台
+						4、
 				*/
 				// console.log(url);
 				// console.log(data);
 				this.user_data=new Object();
+				myself.group_id=data.group_id;
 				//提取到外侧，不放在loadTable中调用了
 				myself.init_Select();
 				// myself.init_control();
