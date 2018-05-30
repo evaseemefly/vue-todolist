@@ -3,7 +3,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">排班详情</div>
             <div class="panel-body table-parent-panel">
-                <div id="toolbar" class="btn-toolbar" role="toolbar">
+                <!-- <div id="toolbar" class="btn-toolbar" role="toolbar">
                     <div class="btn-group" role="group">
                         <button id="btn_add" type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
@@ -12,7 +12,10 @@
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
                         </button>
                     </div>
-                </div>
+                </div> -->
+				<Toolbar
+						@add_row="append_row"
+				></Toolbar>
                 <div id="table_parent">
                     <table id="tb_user"></table>
                 </div>
@@ -23,17 +26,21 @@
 
 <<script>
 import bus from '../assets/eventBus';
+import Toolbar from './toolbar.vue'
 // import '../components/bootstrapExt/datetimepicker/bootstrap-datetimepicker.min.css'
 // import '../components/css/bootstrapExt/table/bootstrap-table.css'
 // import '../components/css/bootstrapExt/editable/bootstrap-editable.css'
 import '../components/js/common/dateFormart.js'
 import '../components/js/common/moment.js'
+
 // import '../components/js/bootstrapExt/table/bootstrap-table.js'
 // import '../components/js/bootstrapExt/editable/bootstrap-editable.js'
 
     export default{
 		props:['searchResult'],
-		
+		components:{
+			Toolbar
+		},
         data(){
 			return{
 				schedulelist:[],				
@@ -139,6 +146,44 @@ import '../components/js/common/moment.js'
 				}
 
 			});
+			},
+
+			newData() {
+				var id = "-999";
+				// var rows = {};
+				var row = {
+					id: id,
+					"dutydate": "2018/4/1",
+					// "duty": {
+					// 	""
+					// },
+					"rDepartmentDuty":{
+						"duid":{
+							"duid":1
+						},
+						"did":{
+							"did":1,
+							"derpartmentname":"当前部门"
+						}
+					},
+					"user": {
+						"uid":1,
+						"username":"未选择"
+						}
+				};
+				return row;
+			},
+
+			append_row:function(){
+				// alert('子组件调用父组件');
+				var $my_table=$("#tb_user");
+				//table最后追加一行
+				$my_table.bootstrapTable('append', this.newData());
+				//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
+				$my_table.bootstrapTable('scrollTo', 'bottom');
+				//初始化行内样式
+				this.init_control();
+
 			},
 
             getSelectDataAndPost:function(params,code ,url=null ) {
