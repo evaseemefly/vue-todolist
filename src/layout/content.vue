@@ -148,6 +148,10 @@ import '../components/js/common/moment.js'
 			});
 			},
 
+			defaultData(){
+				var id="-999"
+			},
+
 			newData() {
 				var id = "-999";
 				// var rows = {};
@@ -159,15 +163,15 @@ import '../components/js/common/moment.js'
 					// },
 					"rDepartmentDuty":{
 						"duid":{
-							"duid":1
+							"duid":-999
 						},
 						"did":{
-							"did":1,
-							"derpartmentname":"当前部门"
+							"did":-999,
+							"derpartmentname":"未选择"
 						}
 					},
 					"user": {
-						"uid":1,
+						"uid":-999,
 						"username":"未选择"
 						}
 				};
@@ -177,13 +181,45 @@ import '../components/js/common/moment.js'
 			append_row:function(){
 				// alert('子组件调用父组件');
 				var $my_table=$("#tb_user");
+				var temp_newdata=this.newData();
 				//table最后追加一行
-				$my_table.bootstrapTable('append', this.newData());
+				$my_table.bootstrapTable('append', temp_newdata);
 				//scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
 				$my_table.bootstrapTable('scrollTo', 'bottom');
 				//初始化行内样式
 				this.init_control();
 
+				//将新增的这一行数据提交至后台（默认值）
+				var url_post = 'http://127.0.0.1:8000/duty/modity/';
+				temp_newdata.id=-999;
+				
+				function convert_data(temp_data){
+					var post_data=new Object();
+					post_data.id=temp_newdata.id;
+					post_data.code="all";
+					post_data.did=temp_newdata.rDepartmentDuty.did.did;
+					post_data.duid=temp_newdata.rDepartmentDuty.duid.duid;
+					post_data.uid=temp_newdata.user.uid;
+					return post_data;
+				}
+				
+				var post_data=convert_data(temp_newdata);
+				
+				
+				this.submitData(post_data,url_post);
+			},
+
+			submitData:function(data_post,url){
+//post到后台
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: data_post,
+				dataType: 'json',
+				success: function (data) {
+					//若返回错误信息，则提示
+				}
+			});
 			},
 
             getSelectDataAndPost:function(params,code ,url=null ) {
@@ -204,16 +240,7 @@ import '../components/js/common/moment.js'
 			//序列化
 			//var duty_data_json = JSON.stringify(duty_data);
 			var url_post = 'http://127.0.0.1:8000/duty/modity/';
-			//post到后台
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: duty_data,
-				dataType: 'json',
-				success: function (data) {
-					//若返回错误信息，则提示
-				}
-			});
+			submitData(duty_data,url_post);
             },
 		
 
