@@ -154,6 +154,7 @@ import '../components/js/common/moment.js'
 
 			newData() {
 				var id = "-999";
+				var myself=this;
 				// var rows = {};
 				var row = {
 					id: id,
@@ -166,7 +167,7 @@ import '../components/js/common/moment.js'
 							"duid":-999
 						},
 						"did":{
-							"did":-999,
+							"did":myself.group_id,
 							"derpartmentname":"未选择"
 						}
 					},
