@@ -48,7 +48,7 @@ import '../components/js/common/moment.js'
 				select_duty_dict:{},	//岗位职责字典
 				select_user_source:[],  //值班人员下拉框
 				select_duty_source:[],	//岗位下拉框
-				group_id:3,				//群组id
+				group_id:-999,				//群组id
 				user_data:{},			//值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
 				curRow:{}				//当前选中行
 			}
@@ -227,6 +227,7 @@ import '../components/js/common/moment.js'
 			//获取修改的信息并提交
 			//console.log(params);
 			var duty_data = new Object();
+			var myself=this;
 			duty_data.id = this.curRow.id;
 			// 以下信息是对于修改非用户时提交时所用的
 			if (code === 'duty') {
@@ -241,7 +242,7 @@ import '../components/js/common/moment.js'
 			//序列化
 			//var duty_data_json = JSON.stringify(duty_data);
 			var url_post = 'http://127.0.0.1:8000/duty/modity/';
-			submitData(duty_data,url_post);
+			myself.submitData(duty_data,url_post);
             },
 		
 
