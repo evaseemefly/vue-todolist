@@ -19,6 +19,15 @@ const config = {
         filename: 'bundle.js',
         path: path.join(__dirname, 'dist')
     },
+
+    resolve: {
+        /*
+         * 别名配置，配置之后，可以在别的js文件中直接使用require('d3')，将导入的文件作为一个模块导入到你需要的项目中，不用配置别也可会当作模块导入项目中，只是你要重复写路径而已。
+         * */
+        alias: {
+            moment$: 'moment/moment.js'
+        }
+    },
     module: {
         rules: [
             //加载 vue 文件
@@ -42,6 +51,17 @@ const config = {
             //     // ]
             //     loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             // },
+
+            //使用babel
+            {
+                test:/\.js$/,
+                use:['babel-loader'],
+                //不对这个进行babel转换，这里边已经打包好
+                exclude:path.resolve(__dirname,'node_modules'),
+                include:path.resolve(__dirname,'src'),
+            },
+
+            //加载css
             {
                 test: /\.css$/,
                 use: [

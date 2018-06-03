@@ -15,6 +15,7 @@
                 </div> -->
 				<Toolbar
 						@add_row="append_row"
+						@del_row="del_row"
 				></Toolbar>
                 <div id="table_parent">
                     <table id="tb_user"></table>
@@ -24,17 +25,29 @@
     </div>
 </template>
 
-<<script>
+<script>
 import bus from '../assets/eventBus';
 import Toolbar from './toolbar.vue'
+
 // import '../components/bootstrapExt/datetimepicker/bootstrap-datetimepicker.min.css'
 // import '../components/css/bootstrapExt/table/bootstrap-table.css'
 // import '../components/css/bootstrapExt/editable/bootstrap-editable.css'
+// import moment from 'moment'
 import '../components/js/common/dateFormart.js'
-import '../components/js/common/moment.js'
+import moment from 'moment'
+// const moment=require('moment')
+//使用require的方式，会提示找不到该js中的export的方法
+// require('../components/js/bootstrapExt/editable/test.js')
+import momenttest from '../components/js/bootstrapExt/editable/test.js'
 
+// var moment;
+//下面两个暂时去掉
+// require('../components/js/common/moment.js')
+// import '../components/js/common/moment.js'
+// import '../components/js/bootstrapExt/editable/bootstrap-editable.js'
 // import '../components/js/bootstrapExt/table/bootstrap-table.js'
 // import '../components/js/bootstrapExt/editable/bootstrap-editable.js'
+
 
     export default{
 		props:['searchResult'],
@@ -178,7 +191,11 @@ import '../components/js/common/moment.js'
 				};
 				return row;
 			},
-
+			del_row:function(){
+				// var date = moment('2018/06/01', "YYYY/MM/DD");
+				// alert(date);
+				momenttest();
+			},
 			append_row:function(){
 				// alert('子组件调用父组件');
 				var $my_table=$("#tb_user");
@@ -245,6 +262,18 @@ import '../components/js/common/moment.js'
 			myself.submitData(duty_data,url_post);
             },
 		
+
+			tablerowDate(value, row, index) {
+				//使用monment.js完成时间的格式化
+				var date = moment(value, "YYYY/MM/DD");
+				// var date=new Date();
+				var date_str = date.format("YYYY-MM-DD");
+
+				var result = "<a href=\"#\" class=\"my_dutydate\" id=\"dob\" data-type=\"combodate\" data-value=\"" + date_str +
+					"\" data-format=\"YYYY-MM-DD\" data-viewformat=\"YYYY-MM-DD\" data-template=\"YYYY /MMM / D \" data-pk=\"1\"  data-title=\"请选择值班日期\">" +
+					date_str + "</a>";
+				return result;
+		},
 
             tablerowDepartmentEdit(value, row, index) {
 
@@ -472,7 +501,6 @@ import '../components/js/common/moment.js'
 				myself.group_id=data.group_id;
 				//提取到外侧，不放在loadTable中调用了
 				myself.init_Select();
-				// myself.init_control();
 				//直接调用loadTable方法，loadTable最后会执行init_control()方法
 				myself.loadTable(url,data);
 				

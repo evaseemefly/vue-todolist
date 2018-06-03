@@ -6,11 +6,13 @@
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
 Editableform is linked with one of input types, e.g. 'text', 'select' etc.
-
 @class editableform
 @uses text
 @uses textarea
 **/
+//6月2日修改
+//由于编辑日期需要引入moment，所以全局引入
+import moment from 'moment'
 (function ($) {
     "use strict";
     

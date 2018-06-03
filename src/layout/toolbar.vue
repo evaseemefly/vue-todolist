@@ -29,7 +29,8 @@
             del_row(){
 
                 //删除当前选中行
-                alert('删除');
+                // alert('删除');
+                this.$emit('del_row');
             },
             init_targetMonthTable(){
                 //生成新的一个月的表
