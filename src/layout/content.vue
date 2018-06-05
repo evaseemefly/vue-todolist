@@ -51,7 +51,9 @@ export default {
       group_id: -999, //群组id,
       group: {},
       user_data: {}, //值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
-      curRow: {} //当前选中行
+      curRow: {}, //当前选中行
+      search_data:{},
+      search_url:{}
     };
   },
   watch: {
@@ -186,7 +188,19 @@ export default {
     del_row: function() {
       // var date = moment('2018/06/01', "YYYY/MM/DD");
       // alert(date);
-      momenttest();
+      var post_url='http://127.0.0.1:8000/duty/schedulelist/';
+      var post_url=null;
+      var post_data={};
+      var myself=this;
+      post_data.id=myself.curRow.id;
+      $.ajax({
+        type:'POST',
+        url:post_url,
+        data:post_data,
+        success:(data)=>{
+
+        }
+      });
     },
     append_row: function() {
       // alert('子组件调用父组件');
@@ -215,9 +229,13 @@ export default {
       var post_data = convert_data(temp_newdata);
 
       this.submitData(post_data, url_post);
+      //销毁table
+      $("#tb_user").bootstrapTable("destroy");
+       this.loadTable(this.search_url, this.search_data);
     },
 
     submitData: function(data_post, url) {
+      var myself=this;
       //post到后台
       $.ajax({
         type: "POST",
@@ -226,6 +244,7 @@ export default {
         dataType: "json",
         success: function(data) {
           //若返回错误信息，则提示
+         
         }
       });
     },
@@ -524,6 +543,8 @@ export default {
       //   myself.group_id = data.group_id;
       myself.group_id = data.group.value;
       myself.group = data.group;
+      myself.search_data=data;
+      myself.search_url=url;
       //提取到外侧，不放在loadTable中调用了
       myself.init_Select();
       //直接调用loadTable方法，loadTable最后会执行init_control()方法
