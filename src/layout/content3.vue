@@ -15,65 +15,7 @@
                 </div> -->
         <Toolbar @add_row="append_row" @del_row="del_row"></Toolbar>
         <div id="table_parent">
-          <table data-toggle="table">
-            <thead>              
-              <!-- <tr v-if="select_duty_source.length>0"> -->
-                <th v-for="obj in select_duty_source">{{obj.text}}</th>
-              <!-- </tr> -->
-
-              <!-- <tr >
-                              
-              </tr> -->
-            </thead>
-
-            <tfoot>
-              <tr>
-                <td>Sum</td>
-                <td>$180</td>
-              </tr>
-            </tfoot>
-
-            <tbody>
-              <tr>
-
-              </tr>
-            </tbody>
-            <!-- <tr>
-              <th v-for="value in select_duty_source">{{value.text}}</th>
-            </tr> -->
-            <!-- <thead>
-              <tr >
-                <td v-for="value in select_duty_source">{{value}}</td>                
-              </tr>
-            </thead>
-            <tbody>
-              <tr></tr>
-            </tbody> -->
-            <!-- <thead>
-              <tr>
-                <th>Month</th>
-                <th>Savings</th>
-              </tr>
-            </thead>
-
-            <tfoot>
-              <tr>
-                <td>Sum</td>
-                <td>$180</td>
-              </tr>
-            </tfoot>
-
-            <tbody>
-              <tr>
-                <td>January</td>
-                <td>$100</td>
-              </tr>
-              <tr>
-                <td>February</td>
-                <td>$80</td>
-              </tr>
-            </tbody> -->
-          </table>
+          <table id="tb_user"></table>
         </div>
       </div>
     </div>
@@ -127,39 +69,6 @@
 
       loadTable: function (url, search_condition) {
         var myself = this;
-        //获取当前的group对应的duty
-
-        $.ajax({
-          type: "GET",
-          url: "http://127.0.0.1:8000/duty/schedulelist/",
-          data: search_condition,
-          success: (data) => {
-            /*
-               返回的是一个数组（会有多个日期的）
-               {dutydate,DutyUserList}
-
-
-            */
-            $.each(data, (index, value) => {
-              var temp_data = {
-                //主班
-                "duty_3": ""
-              }
-            })
-
-            console.log(data);
-          }
-        })
-        var data = [{
-
-        }]
-        $("#tb_user").bootstrapTable({
-          data: data
-        });
-      },
-
-      loadTable_bakup: function (url, search_condition) {
-        var myself = this;
         $("#tb_user").bootstrapTable({
           toolbar: "#toolbar",
           idField: "Id",
@@ -179,7 +88,48 @@
           //url: "data_schedule.json",
           url: "http://127.0.0.1:8000/duty/schedulelist/",
           //url:'http://127.0.0.1:8000/duty/schedulelist/'+'?format=json',
-
+          columns: [{
+              checkbox: true,
+              rowspan: 1
+            },
+            {
+              //由于是复合表头，注意隐藏的元素若复合表头占了两行，需要填满该列
+              field: "id",
+              title: "id",
+              // visible: false,
+              rowspan: 1
+            },
+            {
+              field: "dutydate",
+              title: "值班日期",
+              // visible: false,
+              rowspan: 1,
+              editable: true,
+              formatter: myself.tablerowDate
+            },
+            {
+              field: "department",
+              title: "组",
+              rowspan: 1,
+              editable: false,
+              formatter: myself.tablerowDepartmentEdit
+            },
+            {
+              field: "duty",
+              title: "岗位",
+              rowspan: 1,
+              editable: true,
+              formatter: myself.tablerowDutyEdit
+            },
+            {
+              field: "MainUser",
+              title: "值班员",
+              // visible: false,
+              rowspan: 1,
+              editable: true,
+              formatter: myself.tablerowUserEdit
+            }
+          ],
           onEditableSave: function (field, row, oldValue, $el) {},
           onClickRow: function (row, $element) {
             myself.curRow = row;
@@ -594,7 +544,6 @@
         // console.log(url);
         // console.log(data);
         this.user_data = new Object();
-
         //   myself.group_id = data.group_id;
         myself.group_id = data.group.value;
         myself.group = data.group;
