@@ -135,6 +135,7 @@ export default {
     loadTable: function(url, search_condition) {
       var myself = this;
       //此处改为ajax的方式通过get方式获取
+      //将获取到的data写入table_data中
       $.ajax({
         type: "GET",
         url: "http://127.0.0.1:8000/duty/schedulelist/",
@@ -152,20 +153,21 @@ export default {
             temp_duty = new Object();
             $.each(value.DutyUserList, (temp_index, temp_value) => {
               var temp_duty_id = "duty" + temp_value.rDepartmentDuty.duid.duid;
-              console.log(temp_duty_id);
+              // console.log(temp_duty_id);
               var temp_user_id = temp_value.user.uid;
-              console.log(temp_user_id);
+              // console.log(temp_user_id);
               temp_duty[temp_duty_id] = temp_user_id;
-              console.log(temp_duty);
+              // console.log(temp_duty);
             });
             // var temp_duty_id =
             //   "duty" + value.DutyUserList.rDepartmentDuty.duid.duid;
             // var temp_user_id = value.DutyUserList.user.uid;
           });
           myself.table_data.push(temp_duty);
-          console.log(myself.table_data);
+          // console.log(myself.table_data);
         }
       });
+      //加载table
       $("#tb_user").bootstrapTable({
         toolbar: "#toolbar",
         idField: "Id",
@@ -540,34 +542,34 @@ export default {
         mode: "inline" //编辑框的模式：支持popup和inline两种模式，默认是popup
       });
 
-      $(".my_select_duty").editable({
-        type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
-        source: myself.select_duty_source,
-        title: "选择岗位", //编辑框的标题
-        disabled: false, //是否禁用编辑
-        emptytext: "空文本", //空值的默认文本
+      // $(".my_select_duty").editable({
+      //   type: "select", //编辑框的类型。支持text|textarea|select|date|checklist等
+      //   source: myself.select_duty_source,
+      //   title: "选择岗位", //编辑框的标题
+      //   disabled: false, //是否禁用编辑
+      //   emptytext: "空文本", //空值的默认文本
 
-        success: function(response, value) {
-          // $('#table').bootstrapTable('method', parameter);
-          // $("#tb_user").bootstrapTable('check');
-          var selects = $("#tb_user").bootstrapTable("getSelections");
-          //   console.log("response:" + response + "|" + "value:" + value);
-        },
-        url: function(params) {
-          //点击确定时触发
-          /*
-					 流程：
+      //   success: function(response, value) {
+      //     // $('#table').bootstrapTable('method', parameter);
+      //     // $("#tb_user").bootstrapTable('check');
+      //     var selects = $("#tb_user").bootstrapTable("getSelections");
+      //     //   console.log("response:" + response + "|" + "value:" + value);
+      //   },
+      //   url: function(params) {
+      //     //点击确定时触发
+      //     /*
+			// 		 流程：
 
-					*/
-          myself.getSelectDataAndPost(
-            params,
-            "duty",
-            "http://127.0.0.1:8000/duty/modity/"
-          );
-          //console.log(params);
-        },
-        mode: "inline" //编辑框的模式：支持popup和inline两种模式，默认是popup
-      });
+			// 		*/
+      //     myself.getSelectDataAndPost(
+      //       params,
+      //       "duty",
+      //       "http://127.0.0.1:8000/duty/modity/"
+      //     );
+      //     //console.log(params);
+      //   },
+      //   mode: "inline" //编辑框的模式：支持popup和inline两种模式，默认是popup
+      // });
 
       $(".my_dutydate").editable({
         type: "date", //编辑框的类型。支持text|textarea|select|date|checklist等
