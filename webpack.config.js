@@ -152,6 +152,7 @@ config.devServer = {
     //open:true,
     hot: true
 }
-// config.devtool = '#cheap-module-eval-source-map'
-config.devtool = 'source-map'
+config.devtool = '#cheap-module-eval-source-map'
+// config.devtool = 'source-map'
 module.exports = config
+// Vue.config.devtool=true

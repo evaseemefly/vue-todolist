@@ -43,6 +43,7 @@ import './components/js/bootstrapExt/editable/bootstrap-editable.js'
 // require('bootstrap-loader')
 // require('bootstrap')
 Vue.prototype.moment=moment
+Vue.config.devtools=true;
 const root=document.createElement("div")
 document.body.appendChild(root)
 

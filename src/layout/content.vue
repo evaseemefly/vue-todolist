@@ -37,8 +37,8 @@
 
             <tfoot>
               <tr>
-                <td>Sum</td>
-                <td>$180</td>
+                <td>待显示</td>
+                <td>待显示</td>
               </tr>
             </tfoot>
 
@@ -81,7 +81,7 @@
         table_data: [],
         group_id: -999, //群组id,
         group: {},
-        append_last_date:null,
+        append_last_date: null,
         user_data: {}, //值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
         curRow: {}, //当前选中行
         search_data: {},
@@ -154,11 +154,11 @@
             $.each(data, (index, value) => {
               // console.log(value);
               temp_duty = new Object();
-              var temp_dutydate=value.dutydate;
-              myself.append_last_date=value.dutydate;
-              temp_duty["dutydate"]=temp_dutydate;
+              var temp_dutydate = value.dutydate;
+              myself.append_last_date = value.dutydate;
+              temp_duty["dutydate"] = temp_dutydate;
               $.each(value.DutyUserList, (temp_index, temp_value) => {
-                
+
                 var temp_duty_id = "duty" + temp_value.rDepartmentDuty.duid.duid;
                 // console.log(temp_duty_id);
                 // var temp_user_id = temp_value.user.username;
@@ -206,6 +206,9 @@
           onClickRow: function (row, $element) {
             myself.curRow = row;
           },
+          onClickCell: (field, value, row, $elemen) => {
+              alert(row);
+          },
           onPageChange: function (params) {
             myself.init_control();
           },
@@ -227,25 +230,33 @@
         var id = "-999";
         var myself = this;
         var rows = {};
-        var temp_append_last_date=moment(myself.append_last_date);
-        var temp_append_last_date_str=temp_append_last_date.format('YYYY-MM-DD');
-        var lastday_month=temp_append_last_date.endOf('month');
+        var temp_append_last_date = moment(myself.append_last_date);
+        var temp_append_last_date_str = temp_append_last_date.format("YYYY-MM-DD");
+        var lastday_month = temp_append_last_date;
+        lastday_month.endOf('month');
+
+        // var temp_append_last_date_str=temp_append_last_date.format('YYYY-MM-DD');
+
+        var temp_append_last_date_add1 = moment(myself.append_last_date).add(1, "days");
         console.log(moment(temp_append_last_date_str).endOf('month').date());
         console.log(moment().endOf('month').date());
         console.log(lastday_month.date());
-        if(temp_append_last_date.add(1,"days").format("dd")!=lastday_month){
-            temp_append_last_date=temp_append_last_date.add(1,'days');
-            myself.append_last_date=temp_append_last_date.format("YYYY-MM-DD");
+        console.log(temp_append_last_date_add1);
+        if (temp_append_last_date_add1.format("DD") != lastday_month.format("dd")) {
+          // temp_append_last_date=temp_append_last_date.add(1,'days');
+          // console.log(temp_append_last_date);
+          myself.append_last_date = temp_append_last_date_add1.format("YYYY-MM-DD");
+
         }
-        
+
         // console.log(temp_append_last_date);
         var row = {
           id: id,
-          dutydate: temp_append_last_date.format("YYYY-MM-DD"),
+          dutydate: temp_append_last_date_add1.format("YYYY-MM-DD"),
           // "duty": {
           // 	""
           // },
-          DutyUserList:[],
+          DutyUserList: [],
           // rDepartmentDuty: {
           //   duid: {
           //     duid: -999
@@ -259,17 +270,19 @@
           // }
         };
         //循环向其中添加rDepartmentDuty
-        $.each(myself.select_duty_source,(index,value)=>{
+        $.each(myself.select_duty_source, (index, value) => {
           // console.log(value);
-            row.DutyUserList.push({rDepartmentDuty:{
-              duid:{
-                duid:myself.group_id
+          row.DutyUserList.push({
+            rDepartmentDuty: {
+              duid: {
+                duid: myself.group_id
               },
-              did:{
-                did:value.value,
-                derpartmentname:value.text
+              did: {
+                did: value.value,
+                derpartmentname: value.text
               }
-            }});
+            }
+          });
         });
         return row;
       },
@@ -527,10 +540,10 @@
             myself.select_duty_source = [];
             myself.columns_duty = [];
             myself.columns_duty.push({
-                field: "dutydate" ,
-                title: "日期",
-                editable: true,
-                formatter: myself.tablerowDate
+              field: "dutydate",
+              title: "日期",
+              editable: true,
+              formatter: myself.tablerowDate
             });
             $.each(data, function (index, obj) {
               //分别向下拉框数组以及table的列表头数组中添加岗位信息
