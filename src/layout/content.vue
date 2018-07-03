@@ -84,6 +84,7 @@
         append_last_date: null,
         user_data: {}, //值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
         curRow: {}, //当前选中行
+        curCell:{},
         search_data: {},
         search_url: {}
       };
@@ -207,7 +208,11 @@
             myself.curRow = row;
           },
           onClickCell: (field, value, row, $elemen) => {
-              alert(row);
+            myself.curCell={
+              field:field,
+              value:value,
+              row:row
+            };
           },
           onPageChange: function (params) {
             myself.init_control();
@@ -362,7 +367,7 @@
         });
       },
 
-      getSelectDataAndPost: function (params, code, url = null) {
+      getSelectDataAndPost_bakup: function (params, code, url = null) {
         //获取修改的信息并提交
         //console.log(params);
         var duty_data = new Object();
@@ -386,6 +391,36 @@
         myself.submitData(duty_data, url_post);
       },
 
+      getSelectDataAndPost: function (params, code, url = null) {
+        //获取修改的信息并提交
+        //console.log(params);
+        var duty_data = new Object();
+        var myself = this;
+        // duty_data.id = this.curRow.id;
+        // 1 获取当前选中行的指定时间
+        var target_date=this.curCell.row.dutydate;
+        duty_data.dutydate=target_date;
+
+        //2 当前的group
+        duty_data.did=this.group_id;
+
+        //3 获取当前的duty
+        // 以下信息是对于修改非用户时提交时所用的
+        if (code === "user") {
+          var duty_id= this.curCell.field.substring(this.curCell.field.lastIndexOf("duty")+4);
+          duty_data.duid=duty_id;
+          duty_data.uid = params.value;
+        } else if (code === "date") {
+          duty_data.dutydate = params.value;
+        }
+        console.log(duty_data);
+        //duty_data.modity_id = params.value;
+        duty_data.code = code;
+        //序列化
+        //var duty_data_json = JSON.stringify(duty_data);
+        var url_post = "http://127.0.0.1:8000/duty/modity/";
+        myself.submitData(duty_data, url_post);
+      },
       tablerowDate(value, row, index) {
         /*
 					格式化行内日期要素
