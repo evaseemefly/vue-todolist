@@ -1,7 +1,8 @@
 <template>
     <div id="app" class="container">    
-        <search></search>
-        <mycontent></mycontent>
+        <!-- <search></search>
+        <mycontent></mycontent> -->
+        <leftmenu></leftmenu>
     </div>
 </template>
 
@@ -9,6 +10,7 @@
     // import Header from "./layout/header.vue";
     import Search from "./layout/search.vue";
     import mycontent from "./layout/content.vue";
+    import leftmenu from "./layout/left-menu.vue";
 
     // var bus=new Vue({
         
@@ -24,7 +26,8 @@
         components: {
             // Header,
             Search,
-            mycontent
+            mycontent,
+            leftmenu
         }
         // data () {
         //     return {

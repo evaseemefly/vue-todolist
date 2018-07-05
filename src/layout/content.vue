@@ -84,7 +84,7 @@
         append_last_date: null,
         user_data: {}, //值班人员下拉框及岗位下拉框中需要向后台提交的data（现在只保存当前的group_id）
         curRow: {}, //当前选中行
-        curCell:{},
+        curCell: {},
         search_data: {},
         search_url: {}
       };
@@ -136,7 +136,8 @@
 
       loadTable: function (url, search_condition) {
         var myself = this;
-
+        //每次加载前把table中的data清空
+        this.table_data=[];
 
         //此处改为ajax的方式通过get方式获取
         //将获取到的data写入table_data中
@@ -150,32 +151,36 @@
           success: function (data) {
             // console.log(data);
             var temp_duty = new Object();
-            //加载成功后将数据推入table_data中
-            //注意jquery的each后面的function的参数有两个，index，value
-            $.each(data, (index, value) => {
-              // console.log(value);
-              temp_duty = new Object();
-              var temp_dutydate = value.dutydate;
-              myself.append_last_date = value.dutydate;
-              temp_duty["dutydate"] = temp_dutydate;
-              $.each(value.DutyUserList, (temp_index, temp_value) => {
+            if (data[0].DutyUserList.length > 0) {
+              //加载成功后将数据推入table_data中
+              //注意jquery的each后面的function的参数有两个，index，value
+              $.each(data, (index, value) => {
+                // console.log(value);
+                temp_duty = new Object();
+                var temp_dutydate = value.dutydate;
+                myself.append_last_date = value.dutydate;
+                temp_duty["dutydate"] = temp_dutydate;
+                $.each(value.DutyUserList, (temp_index, temp_value) => {
 
-                var temp_duty_id = "duty" + temp_value.rDepartmentDuty.duid.duid;
-                // console.log(temp_duty_id);
-                // var temp_user_id = temp_value.user.username;
-                var temp_user_id = temp_value.user.uid;
-                // console.log(temp_user_id);
-                temp_duty[temp_duty_id] = temp_user_id;
-                // temp_duty[temp_duty_id] = temp_user_id;
+                  var temp_duty_id = "duty" + temp_value.rDepartmentDuty.duid.duid;
+                  // console.log(temp_duty_id);
+                  // var temp_user_id = temp_value.user.username;
+                  var temp_user_id = temp_value.user.uid;
+                  // console.log(temp_user_id);
+                  temp_duty[temp_duty_id] = temp_user_id;
+                  // temp_duty[temp_duty_id] = temp_user_id;
 
-                // console.log(temp_duty);
+                  // console.log(temp_duty);
+                });
+                // var temp_duty_id =
+                //   "duty" + value.DutyUserList.rDepartmentDuty.duid.duid;
+                // var temp_user_id = value.DutyUserList.user.uid;
+                myself.table_data.push(temp_duty);
               });
-              // var temp_duty_id =
-              //   "duty" + value.DutyUserList.rDepartmentDuty.duid.duid;
-              // var temp_user_id = value.DutyUserList.user.uid;
-            });
-            myself.table_data.push(temp_duty);
-            // console.log(myself.table_data);
+              // myself.table_data.push(temp_duty);
+              // console.log(myself.table_data);
+            }
+
           }
         });
 
@@ -208,10 +213,10 @@
             myself.curRow = row;
           },
           onClickCell: (field, value, row, $elemen) => {
-            myself.curCell={
-              field:field,
-              value:value,
-              row:row
+            myself.curCell = {
+              field: field,
+              value: value,
+              row: row
             };
           },
           onPageChange: function (params) {
@@ -243,10 +248,10 @@
         // var temp_append_last_date_str=temp_append_last_date.format('YYYY-MM-DD');
 
         var temp_append_last_date_add1 = moment(myself.append_last_date).add(1, "days");
-        console.log(moment(temp_append_last_date_str).endOf('month').date());
-        console.log(moment().endOf('month').date());
-        console.log(lastday_month.date());
-        console.log(temp_append_last_date_add1);
+        // console.log(moment(temp_append_last_date_str).endOf('month').date());
+        // console.log(moment().endOf('month').date());
+        // console.log(lastday_month.date());
+        // console.log(temp_append_last_date_add1);
         if (temp_append_last_date_add1.format("DD") != lastday_month.format("dd")) {
           // temp_append_last_date=temp_append_last_date.add(1,'days');
           // console.log(temp_append_last_date);
@@ -261,6 +266,7 @@
           // "duty": {
           // 	""
           // },
+          did: this.group_id,
           DutyUserList: [],
           // rDepartmentDuty: {
           //   duid: {
@@ -280,18 +286,49 @@
           row.DutyUserList.push({
             rDepartmentDuty: {
               duid: {
-                duid: myself.group_id
+                // duid: myself.group_id,
+                duid: value.value,
+                dutyname: value.text
+
               },
               did: {
-                did: value.value,
-                derpartmentname: value.text
+                did: myself.group_id
+                // did: value.value,
+                // derpartmentname: value.text
               }
             }
           });
         });
         return row;
       },
-      del_row: function () {
+      del_row: function () {       
+        var post_url = "http://127.0.0.1:8000/duty/schedulelist/del/";        
+        var post_data = {};
+        var myself = this;
+        var target_date=this.curRow.dutydate;
+        post_data.target_date=target_date;
+        post_data.group_id=this.group_id;
+        // var ids = $("#tb_user").bootstrapTable("getSelections");
+        //使用getSelections获取的选中的行若未选中则为none，len=0
+        //取出对象中的id
+        // var ids_str = [];
+        // $.each(ids, (index, value) => {
+        //   ids_str.push(value.id);
+        // });
+        // post_data.id = ids_str;
+        $.post(
+          post_url,
+          post_data,
+          data => {
+            //删除成功重新查询表
+            //销毁table
+            $("#tb_user").bootstrapTable("destroy");
+            this.loadTable(myself.search_url, myself.search_data);
+          },
+          "text"
+        );
+      },
+      del_row_1: function () {
         // var date = moment('2018/06/01', "YYYY/MM/DD");
         // alert(date);
         var post_url = "http://127.0.0.1:8000/duty/schedulelist/";
@@ -305,7 +342,7 @@
         $.each(ids, (index, value) => {
           ids_str.push(value.id);
         });
-        console.log(ids_str);
+        // console.log(ids_str);
         post_data.id = ids_str;
         $.post(
           post_url,
@@ -332,22 +369,25 @@
         //初始化行内样式
         this.init_control();
         //将新增的这一行数据提交至后台（默认值）
-        var url_post = "http://127.0.0.1:8000/duty/modity/";
+        var url_post = "http://127.0.0.1:8000/duty/schedulelist/creat/";
         temp_newdata.id = -999;
 
         function convert_data(temp_data) {
           var post_data = new Object();
           post_data.id = temp_data.id;
           post_data.code = "all";
-          post_data.did = temp_data.rDepartmentDuty.did.did;
-          post_data.duid = temp_data.rDepartmentDuty.duid.duid;
-          post_data.uid = temp_data.user.uid;
+          post_data.did = temp_data.did;
+          post_data.duids = [];
+          $.each(temp_data.DutyUserList, (index, value) => {
+            post_data.duids.push(value.rDepartmentDuty.duid.duid);
+          });
+          post_data.selected_date = temp_data.dutydate;
           return post_data;
         }
 
-        // var post_data = convert_data(temp_newdata);
+        var post_data = convert_data(temp_newdata);
 
-        // this.submitData(post_data, url_post);
+        this.submitData(post_data, url_post);
         //销毁table
         // $("#tb_user").bootstrapTable("destroy");
         // this.loadTable(this.search_url, this.search_data);
@@ -398,17 +438,17 @@
         var myself = this;
         // duty_data.id = this.curRow.id;
         // 1 获取当前选中行的指定时间
-        var target_date=this.curCell.row.dutydate;
-        duty_data.dutydate=target_date;
+        var target_date = this.curCell.row.dutydate;
+        duty_data.dutydate = target_date;
 
         //2 当前的group
-        duty_data.did=this.group_id;
+        duty_data.did = this.group_id;
 
         //3 获取当前的duty
         // 以下信息是对于修改非用户时提交时所用的
         if (code === "user") {
-          var duty_id= this.curCell.field.substring(this.curCell.field.lastIndexOf("duty")+4);
-          duty_data.duid=duty_id;
+          var duty_id = this.curCell.field.substring(this.curCell.field.lastIndexOf("duty") + 4);
+          duty_data.duid = duty_id;
           duty_data.uid = params.value;
         } else if (code === "date") {
           duty_data.dutydate = params.value;
