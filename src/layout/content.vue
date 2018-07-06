@@ -137,7 +137,7 @@
       loadTable: function (url, search_condition) {
         var myself = this;
         //每次加载前把table中的data清空
-        this.table_data=[];
+        this.table_data = [];
 
         //此处改为ajax的方式通过get方式获取
         //将获取到的data写入table_data中
@@ -301,13 +301,13 @@
         });
         return row;
       },
-      del_row: function () {       
-        var post_url = "http://127.0.0.1:8000/duty/schedulelist/del/";        
+      del_row: function () {
+        var post_url = "http://127.0.0.1:8000/duty/schedulelist/del/";
         var post_data = {};
         var myself = this;
-        var target_date=this.curRow.dutydate;
-        post_data.target_date=target_date;
-        post_data.group_id=this.group_id;
+        var target_date = this.curRow.dutydate;
+        post_data.target_date = target_date;
+        post_data.group_id = this.group_id;
         // var ids = $("#tb_user").bootstrapTable("getSelections");
         //使用getSelections获取的选中的行若未选中则为none，len=0
         //取出对象中的id

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --history-api-fallback --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +33,7 @@
     "url-loader": "^1.0.1",
     "vue": "^2.5.16",
     "vue-loader": "^15.0.11",
+    "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"

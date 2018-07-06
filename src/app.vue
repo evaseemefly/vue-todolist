@@ -2,7 +2,9 @@
     <div id="app" class="container">    
         <!-- <search></search>
         <mycontent></mycontent> -->
+        <!-- <router-link to="/content"></router-link> -->
         <leftmenu></leftmenu>
+        <router-view></router-view>
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <ul id="ul_nav" class="nav nav-pills nav-stacked col-md-3">
+    <ul id="ul_nav" class="nav nav-pills nav-stacked">
         <li>
             <!--data-toggle，用于告诉 js需要对按钮做什么-->
             <!--collapse即是折叠-->
@@ -8,11 +8,14 @@
             <a href="#" data-toggle="collapse" data-target="#sub1">预警室&nbsp;
                 <span class="glyphicon glyphicon-list-alt"></span>
             </a>
-            <ul id="sub1" class="nav collapse">
+            <ul id="sub1" class="nav collapse">                
                 <li>
-                    <a href="#">
+                    <router-link to="/content">
                         <span class="glyphicon glyphicon-user"></span>&nbsp; 群组1
-                    </a>
+                    </router-link>
+                    <!-- <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp; 群组1
+                    </a> -->
                 </li>
                 <li>
                     <a href="#">
@@ -39,4 +42,11 @@
 </script>
 
 <style>
+#ul_nav{
+    position: fixed;
+    left: 0px;
+    top:0px;
+    bottom:0px;
+    width: 200px;
+}
 </style>

@@ -4,6 +4,8 @@
 import Vue from 'vue'
 // import 'vue/dist/vue.js'
 import App from './app.vue'
+import VueRouter from 'vue-router'
+import Routers from '../router';
 import $ from 'jquery'
 // import 'bootstrap/dist/css/bootstrap.min.css'  
 // import 'bootstrap/dist/js/bootstrap.min'  
@@ -44,12 +46,23 @@ import './components/js/bootstrapExt/editable/bootstrap-editable.js'
 // require('bootstrap')
 Vue.prototype.moment=moment
 Vue.config.devtools=true;
+Vue.use(VueRouter)
 const root=document.createElement("div")
 document.body.appendChild(root)
 
+// 路由配置
+const RouterConfig = {
+    // 使用 HTML5 的 History 路由模式
+    mode: 'history',
+    routes: Routers
+};
+const router = new VueRouter(RouterConfig);
+
+
 new Vue({
     //使用箭头语法等同于下面的写法
-    render:(h)=>h(App)
+    render:(h)=>h(App),
+    router:router
     // render:function(h){
     //     h(App);
     // }
