@@ -1,6 +1,6 @@
 const routers=[
     {
-        path:'/content',
+        path:'/content/:did',
         component:(resolve)=>require(['./src/layout/center-content.vue'],resolve)
     },
     // {

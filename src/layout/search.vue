@@ -57,13 +57,17 @@ import bus from "../assets/eventBus";
 // import vue from 'vue'
 export default {
   //父组件传入的参数
-  props: ["searchResult"],
-  // props:{
-  // 	searchResult:{
-  // 		type:,
-  // 		required:true //参数一定要传入
-  // 	}
-  // },
+  // props: ["searchResult"],
+  props:{
+  	searchResult:{
+  		type:Object,
+  		required:false //参数一定要传入
+    },
+    did:{
+      type:Number,
+      required:true
+    }
+  },
   data: function() {
     return {
       selected_user: 1,
@@ -72,7 +76,8 @@ export default {
       options_group: [],
       selected_date: null,
       dict_users: {},
-      searchResult: null
+      searchResult: null,
+      did:-999
     };
   },
   watch: {
@@ -224,7 +229,7 @@ export default {
       // var temp=this;
       var get_groupAnduser_url = "http://127.0.0.1:8000/duty/grouplist/";
       var post_data = {
-        department_id: 1
+        department_id: this.did
       };
       var dict_users = {};
       $.ajax({
@@ -263,6 +268,7 @@ export default {
   mounted: function() {
     this.dateDefind();
     this.getgroupuser();
+    this.did=this.did;
   }
 };
 </script>

@@ -10,17 +10,17 @@
             </a>
             <ul id="sub1" class="nav collapse">                
                 <li>
-                    <router-link to="/content">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp; 群组1
+                    <router-link to="/content/3">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp; 海浪
                     </router-link>
                     <!-- <a href="#">
                         <span class="glyphicon glyphicon-user"></span>&nbsp; 群组1
                     </a> -->
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp; 群组2
-                    </a>
+                    <router-link to="/content/4">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp; 海啸
+                    </router-link>
                 </li>
                 <li>
                     <a href="#">
@@ -45,7 +45,7 @@
 #ul_nav{
     position: fixed;
     left: 0px;
-    top:0px;
+    top:50px;
     bottom:0px;
     width: 200px;
 }

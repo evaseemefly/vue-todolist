@@ -1,6 +1,7 @@
 <template>
     <div id="center-content" >
-        <search></search>
+        <!-- <header></header> -->
+        <search did="did"></search>
         <maincontent></maincontent>
     </div>
 
@@ -9,10 +10,19 @@
 <script>
     import maincontent from "./content.vue";
     import search from "./search.vue";
+    
     export default {
         components: {
             maincontent,
             search
+        },
+        data(){
+            return{
+                did:-999
+            }
+        },
+        mounted:function(){
+            this.did=this.$route.params.did;
         }
     }
 </script>
@@ -22,5 +32,8 @@
     /* position: fixed; */
     /* position: fixed; */
     padding-left: 220px;
+    /* top:50px; */
+    margin-top: 50px;
+    right: 0px;    
 }
 </style>
