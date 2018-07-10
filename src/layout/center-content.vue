@@ -1,7 +1,8 @@
 <template>
     <div id="center-content" >
         <!-- <header></header> -->
-        <search did="did"></search>
+        <!-- 父组件向子组件动态传值，需要使用v-bind进行绑定 -->
+        <search :did="did"></search>
         <maincontent></maincontent>
     </div>
 
@@ -18,7 +19,9 @@
         },
         data(){
             return{
-                did:-999
+                // did:-999
+                // did:route.params.did
+                did:this.$route.params.did
             }
         },
         mounted:function(){

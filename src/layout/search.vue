@@ -76,8 +76,8 @@ export default {
       options_group: [],
       selected_date: null,
       dict_users: {},
-      searchResult: null,
-      did:-999
+      searchResult: null
+      // did:this.did
     };
   },
   watch: {
@@ -236,9 +236,7 @@ export default {
         type: "GET",
         url: get_groupAnduser_url,
         dataType: "json",
-        data: {
-          post_data
-        },
+        data: post_data,
         async: false,
         success: function(data) {
           /*
@@ -268,7 +266,7 @@ export default {
   mounted: function() {
     this.dateDefind();
     this.getgroupuser();
-    this.did=this.did;
+    // this.did=this.did;
   }
 };
 </script>

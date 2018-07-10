@@ -10,7 +10,7 @@
             </a>
             <ul id="sub1" class="nav collapse">                
                 <li>
-                    <router-link to="/content/3">
+                    <router-link to="/content/4">
                         <span class="glyphicon glyphicon-user"></span>&nbsp; 海浪
                     </router-link>
                     <!-- <a href="#">
