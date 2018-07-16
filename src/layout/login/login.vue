@@ -3,14 +3,14 @@
     <div class="c-box bg-box">
       <div class="login-box clearfix" style="margin-top:10px">
         <div class="fr form-box">
-          <h2>帐号登录</h2>
+          <h2>预报中心值班系统</h2>
           <form id="jsLoginForm" autocomplete="off">
 
             <input type="hidden" name="csrfmiddlewaretoken" value="ywSlOHdiGsK6VFB6iyhnB1B30khmz8SU">
 
             <div class="form-group marb20">
               <label>用&nbsp;户&nbsp;名</label>
-              <input name="account_l" id="account_l" type="text" v-model="userName" placeholder="手机号/账号">
+              <input name="account_l" id="account_l" type="text" v-model="userName" placeholder="用户名">
             </div>
             <p class="error-text" v-show="userNameError">{{userNameError}}</p>
             <div class="form-group marb8">
@@ -91,7 +91,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error-text {
   color: #fa8341;
 }
