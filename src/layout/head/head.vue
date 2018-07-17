@@ -6,28 +6,54 @@
                     <span class="sr-only">Toggle navigation</span>
                 </button>
                 <a class="navbar-brand" href="#">网站后台管理</a>
-                
+
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">预警室 <span class="sr-only">(current)</span></a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前部门 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            </ul>
-        </li>
-      </ul>
-         </div><!-- /.navbar-collapse -->
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">预警室
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前部门
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">Action</a>
+                            </li>
+                            <li>
+                                <a href="#">Another action</a>
+                            </li>
+                            <li>
+                                <a href="#">Something else here</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前用户&nbsp  
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">退出登录</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </nav>
     </div>
 
 </template>
 
 <script>
-export default {};
+    export default {};
 </script>
 
 <style>
