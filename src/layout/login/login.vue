@@ -52,10 +52,10 @@ export default {
         password: this.parseWord
       })
       .then(function(response){
-//存储用户名
-          // cookie.setCookie("name", this.userName, this.overdue);
+          //存储用户名
+          cookie.setCookie("name", myself.userName, myself.overdue);
           //存储后台返回的token
-          // cookie.setCookie("token", response.data.token, this.overdue);
+          cookie.setCookie("token", response.data.token, myself.overdue);
         //   //成功并跳转
         //   // this.$router.push({name:'index'});
         //   // this.$router.push({ path: "/home" });

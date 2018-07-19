@@ -34,14 +34,14 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前用户&nbsp  
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{name}}&nbsp
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">退出登录</a>
+                                <a href="#" @click="logout">退出登录</a>
                             </li>
-                            
+
                         </ul>
                     </li>
                 </ul>
@@ -53,7 +53,39 @@
 </template>
 
 <script>
-    export default {};
+import cookie from "../../common/js/cookie.js";
+export default {
+  data() {
+    return {
+      name: "",
+      token: ""
+    };
+  },
+  methods: {
+    //登出
+    logout() {
+        /*
+            登出操作：
+            1、清除cookie中的name与token的value
+            2、跳转至login页面
+        */
+       //1、 删除指定cookie
+       cookie.delCookie('name');
+       cookie.delCookie('token');
+
+       //2、跳转至login页面
+       this.$router.push("/login");
+    }
+  },
+  //加载组件后从cookie中取出user以及token的值
+  mounted: function() {
+    this.name = cookie.getCookie("name");
+    this.token = cookie.getCookie("token");
+    console.log(this.name);
+    console.log(this.token);
+    // this.name = cookie.getCookie("name");
+  }
+};
 </script>
 
 <style>
