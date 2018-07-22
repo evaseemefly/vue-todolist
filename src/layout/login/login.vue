@@ -56,6 +56,7 @@ export default {
           cookie.setCookie("name", myself.userName, myself.overdue);
           //存储后台返回的token
           cookie.setCookie("token", response.data.token, myself.overdue);
+          localStorage.token=response.data.token;
         //   //成功并跳转
         //   // this.$router.push({name:'index'});
         //   // this.$router.push({ path: "/home" });
