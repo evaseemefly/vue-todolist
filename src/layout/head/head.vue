@@ -10,8 +10,8 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="#">预警室
+                    <li v-for="(group,index) in groups" :class="index==group_index?'active':''">
+                        <a href="#" @click="changeIndex(index)">{{group.department.derpartmentname}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -53,39 +53,57 @@
 </template>
 
 <script>
-import cookie from "../../common/js/cookie.js";
-export default {
-  data() {
-    return {
-      name: "",
-      token: ""
-    };
-  },
-  methods: {
-    //登出
-    logout() {
-        /*
-            登出操作：
-            1、清除cookie中的name与token的value
-            2、跳转至login页面
-        */
-       //1、 删除指定cookie
-       cookie.delCookie('name');
-       cookie.delCookie('token');
+    import cookie from "../../common/js/cookie.js";
+    export default {
+        data() {
+            return {
+                name: "",
+                token: "",
+                group_index:0
+                //   groups:[]
+            };
+        },
+        props: {
+            groups: {
+                required: true
+            }
+        },
+        methods: {
+            //登出
+            logout() {
+                /*
+                    登出操作：
+                    1、清除cookie中的name与token的value
+                    2、跳转至login页面
+                */
+                //1、 删除指定cookie
+                cookie.delCookie('name');
+                cookie.delCookie('token');
 
-       //2、跳转至login页面
-       this.$router.push("/login");
-    }
-  },
-  //加载组件后从cookie中取出user以及token的值
-  mounted: function() {
-    this.name = cookie.getCookie("name");
-    this.token = cookie.getCookie("token");
-    console.log(this.name);
-    console.log(this.token);
-    // this.name = cookie.getCookie("name");
-  }
-};
+                //2、跳转至login页面
+                this.$router.push("/login");
+            },
+            //子组件将当前选中的值传递给父组件
+            changeIndex: function (index) {
+                // alert(index);
+                //将当前index值传递给父组件
+                this.group_index=index;
+                //使用this.$emit除法父组件的事件
+                this.$emit("changeIndex",index);
+            },
+            // changeParentIndex(index) {
+
+            // }
+        },
+        //加载组件后从cookie中取出user以及token的值
+        mounted: function () {
+            this.name = cookie.getCookie("name");
+            this.token = cookie.getCookie("token");
+            console.log(this.name);
+            console.log(this.token);
+            // this.name = cookie.getCookie("name");
+        }
+    };
 </script>
 
 <style>
