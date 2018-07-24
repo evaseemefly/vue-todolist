@@ -11,9 +11,17 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li v-for="(group,index) in groups" :class="index==group_index?'active':''">
-                        <a href="#" @click="changeIndex(index)">{{group.department.derpartmentname}}
+                        <!-- <a href="#" @click="changeIndex(index)">{{group.department.derpartmentname}}
                             <span class="sr-only">(current)</span>
-                        </a>
+                        </a> -->
+                        <router-link :to="{name:'content',path:'content',params:{did:group.department.did}}"
+                            @click.native="changeIndex(index)"> {{group.department.derpartmentname}}
+                            <span class="sr-only">(current)</span>
+                        </router-link>
+                        <!-- <router-link to="/home/content/4"
+                            @click.native="changeIndex(index)"> {{group.department.derpartmentname}}
+                            <span class="sr-only">(current)</span>
+                        </router-link> -->
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前部门
@@ -59,7 +67,7 @@
             return {
                 name: "",
                 token: "",
-                group_index:0
+                group_index: 0
                 //   groups:[]
             };
         },
@@ -79,7 +87,6 @@
                 //1、 删除指定cookie
                 cookie.delCookie('name');
                 cookie.delCookie('token');
-
                 //2、跳转至login页面
                 this.$router.push("/login");
             },
@@ -87,12 +94,11 @@
             changeIndex: function (index) {
                 // alert(index);
                 //将当前index值传递给父组件
-                this.group_index=index;
+                this.group_index = index;
                 //使用this.$emit除法父组件的事件
-                this.$emit("changeIndex",index);
+                this.$emit("changeIndex", index);
             },
             // changeParentIndex(index) {
-
             // }
         },
         //加载组件后从cookie中取出user以及token的值

@@ -1,9 +1,10 @@
 <template>
   <div id="app" class="container">
-    <myheader :groups=groups
+    <myheader :groups=departments
               @changeIndex="changeIndex"></myheader>
-    <leftmenu :groups=groups
-              @changeIndex=changeIndex></leftmenu>
+    <!-- <leftmenu :groups=groups
+              @changeIndex=changeIndex(group_index)></leftmenu> -->
+    <leftmenu :groups=groups></leftmenu>
     <router-view></router-view>
   </div>
 </template>
@@ -27,6 +28,7 @@
     data() {
       return {
         searchResult: null,
+        departments:[],
         groups: [],
         group_index:0
       };
@@ -47,7 +49,7 @@
         console.log(cookie.getCookie('token'));
         getDepDutyList().then(function (res) {
           console.log(res);
-          myself.groups = res.data;
+          myself.departments = res.data;
 
         });
         //   getDepDutyList().then(function(res) {
@@ -55,9 +57,10 @@
         //   });
       },
       changeIndex:function(index){
-        alert(`子组件传递过来的值 ${index}`);
+        // alert(`子组件传递过来的值 ${index}`);
         //获取由子组件传递过来的index，该index为当前的header与left-navbar的department的索引值        
         this.group_index=index;
+        this.groups=this.departments[this.group_index];
       }
     },
     mounted: function () {

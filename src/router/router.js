@@ -9,9 +9,12 @@ import content from '../layout/home/content-main.vue'
 const routers=[
     {
         path:'/home',
+        name:'home',
         component:home,
         children:[
             {
+                name:'content',
+                // path:'content/:did',
                 path:'content/:did',
                 component:content
             }

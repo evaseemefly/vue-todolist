@@ -723,8 +723,8 @@
         // console.log(data);
         this.user_data = new Object();
 
-        //   myself.group_id = data.group_id;
-        myself.group_id = data.group.value;
+        // myself.group_id = data.group.value;
+        myself.group_id = data.group_id_new;
         myself.group = data.group;
         myself.search_data = data;
         myself.search_url = url;

@@ -26,7 +26,17 @@
             }
         },
         mounted:function(){
+            // alert("mounted调用");
             this.did=this.$route.params.did;
+        },
+        created:function(){
+            // alert("created调用");
+        },
+        watch:{
+            "$route":function(){
+                // alert('路由变化');
+                this.did=this.$route.params.did;
+            }
         }
     }
 </script>
