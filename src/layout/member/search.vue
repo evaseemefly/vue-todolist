@@ -2,37 +2,57 @@
 12:13:02 08:56:13 */
 
 <template>
-
-  <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                    aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">查询条件</a>
+  <div id="searchbar">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+            aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">查询条件</a>
+        </div>
+        <form class="navbar-form navbar-left">
+          <div class="row">
+            <div class="form-group">
+              姓名
+              <div class="input-group col-md-8">
+                <select class="form-control" v-model="selected_user">
+                  <option v-for='option in options_user' v-bind:value="option.value">
+                    {{option.text}}
+                  </option>
+                </select>
+              </div>
             </div>
-            <form class="navbar-form navbar-left">
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        姓名
-                        <input type="text"  name="" id="" class="form-control">
-                    </div>
-                    <div class="form-group col-md-4">
+            <!-- <div class="form-group">
                         日期
                         <input type="text" class="form-control picker" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-default mt-5">查询</button>
-                </div>
-            </form>
+                    </div> -->
+            <div class="form-group">
+              日期
+              <div class="input-group date form_date col-md-8" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
+                data-link-format="yyyy-mm-dd">
+                <input id="datetimepicker" class="form-control" size="12" type="text" value="">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+              <input type="hidden" id="dtp_input2" value="" />
+              <br/>
+            </div>
+            <button type="button" class="btn btn-default mt-5" v-on:click="summit()">查询</button>
+          </div>
+        </form>
 
-        </div>
+      </div>
 
     </nav>
+  </div>
+
 
 </template>
 
@@ -171,7 +191,7 @@
           users_id: [myself.selected_user],
           group: group_temp,
           group_id: myself.selected_group,
-          group_id_new:this.did,
+          group_id_new: this.did,
           groups_id: [myself.selected_group],
           // group_name: select_group_name,
           selected_date: myself.selected_date
@@ -184,7 +204,7 @@
       getSchedulelist: function () {},
       //获取群组和群组对应的人员
       getgroupuser() {
-        // var self = this;
+        //根据当前的did获取该did拥有的user
         var data_get = null;
         var myself = this;
         // var temp=this;
@@ -222,6 +242,14 @@
         });
         this.options_group = options_group;
         this.dict_users = dict_users;
+        //每次获取时需要清空当前options_user的列表
+        myself.options_user=[];
+        $.each(data_get[0].uid,(index,val)=>{
+          myself.options_user.push({
+            text: val.username,
+            value: val.uid
+          });
+        });
       }
     },
 
@@ -240,4 +268,7 @@
   };
 </script>
 <style>
+  #searchbar {
+    padding: 15px;
+  }
 </style>

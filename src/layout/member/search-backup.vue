@@ -187,7 +187,7 @@
           users_id: [myself.selected_user],
           group: group_temp,
           group_id: myself.selected_group,
-          group_id_new:this.did,
+          group_id_new: this.did,
           groups_id: [myself.selected_group],
           // group_name: select_group_name,
           selected_date: myself.selected_date
@@ -238,6 +238,7 @@
         });
         this.options_group = options_group;
         this.dict_users = dict_users;
+        
       }
     },
 

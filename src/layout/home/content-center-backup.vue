@@ -3,8 +3,19 @@
     <div class="panel panel-primary">
       <div class="panel-heading">排班详情</div>
       <div class="panel-body table-parent-panel">
+        <!-- <div id="toolbar" class="btn-toolbar" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <button id="btn_add" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                        </button>
+                        <button id="btn_delete" type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+                        </button>
+                    </div>
+                </div> -->
         <Toolbar @add_row="append_row" @del_row="del_row"></Toolbar>
         <div id="table_parent">
+
           <table v-show="select_duty_source.length>0" data-toggle="table">
             <thead>
               <!-- 注意此处只是使用bootstrap table时是需要手动添加th中的div，正常的table是不用的 -->
@@ -14,7 +25,16 @@
                 <div class="th-inner">{{obj.text}}</div>
                 <div class="fht-cell"></div>
               </th>
+
+              <!-- <tr>
+                  <th data-field="$index" v-for="(obj,index) in select_duty_source">
+                    <div class="th-inner">{{obj.text}}</div>
+                    <div class="fht-cell"></div>
+                    </th>                   
+                </tr> -->
+
             </thead>
+
             <tfoot>
               <tr>
                 <td>待显示</td>
@@ -85,6 +105,36 @@
         // this.$forceUpdated();
       },
 
+      loadTable_1: function (url, search_condition) {
+        var myself = this;
+        //获取当前的group对应的duty
+
+        $.ajax({
+          type: "GET",
+          url: "http://127.0.0.1:8000/duty/schedulelist/",
+          data: search_condition,
+          success: data => {
+            /*
+                 返回的是一个数组（会有多个日期的）
+                 {dutydate,DutyUserList}
+
+
+              */
+            $.each(data, (index, value) => {
+              var temp_data = {
+                //主班
+                duty_3: ""
+              };
+            });
+
+            console.log(data);
+          }
+        });
+        var data = [{}];
+        $("#tb_user").bootstrapTable({
+          data: data
+        });
+      },
 
       loadTable: function (url, search_condition) {
         var myself = this;
@@ -115,14 +165,22 @@
                 $.each(value.DutyUserList, (temp_index, temp_value) => {
 
                   var temp_duty_id = "duty" + temp_value.rDepartmentDuty.duid.duid;
-                  
+                  // console.log(temp_duty_id);
+                  // var temp_user_id = temp_value.user.username;
                   var temp_user_id = temp_value.user.uid;
+                  // console.log(temp_user_id);
                   temp_duty[temp_duty_id] = temp_user_id;
-                 
+                  // temp_duty[temp_duty_id] = temp_user_id;
+
+                  // console.log(temp_duty);
                 });
-               
+                // var temp_duty_id =
+                //   "duty" + value.DutyUserList.rDepartmentDuty.duid.duid;
+                // var temp_user_id = value.DutyUserList.user.uid;
                 myself.table_data.push(temp_duty);
               });
+              // myself.table_data.push(temp_duty);
+              // console.log(myself.table_data);
             }
 
           }
@@ -143,9 +201,13 @@
           striped: true, //使表格带有条纹
           queryParams: function (param) {
             return search_condition;
-           
+            //   var query_data = search_condition;
+            //   return query_data;
           },
-         
+          // method: "GET",
+          //url: "data_schedule.json",
+          // url: "http://127.0.0.1:8000/duty/schedulelist/",
+          //url:'http://127.0.0.1:8000/duty/schedulelist/'+'?format=json',
           columns: myself.columns_duty,
           data: myself.table_data,
           onEditableSave: function (field, row, oldValue, $el) {},
@@ -188,9 +250,13 @@
         // var temp_append_last_date_str=temp_append_last_date.format('YYYY-MM-DD');
 
         var temp_append_last_date_add1 = moment(myself.append_last_date).add(1, "days");
-        
+        // console.log(moment(temp_append_last_date_str).endOf('month').date());
+        // console.log(moment().endOf('month').date());
+        // console.log(lastday_month.date());
+        // console.log(temp_append_last_date_add1);
         if (temp_append_last_date_add1.format("DD") != lastday_month.format("dd")) {
-          
+          // temp_append_last_date=temp_append_last_date.add(1,'days');
+          // console.log(temp_append_last_date);
           myself.append_last_date = temp_append_last_date_add1.format("YYYY-MM-DD");
 
         }
@@ -199,10 +265,22 @@
         var row = {
           id: id,
           dutydate: temp_append_last_date_add1.format("YYYY-MM-DD"),
-          
+          // "duty": {
+          // 	""
+          // },
           did: this.group_id,
           DutyUserList: [],
-
+          // rDepartmentDuty: {
+          //   duid: {
+          //     duid: -999
+          //   },
+          //   did: {
+          //     //did已经封装只group中
+          //     // did: myself.group_id,
+          //     did: myself.group.value,
+          //     derpartmentname: myself.group.text
+          //   }
+          // }
         };
         //循环向其中添加rDepartmentDuty
         $.each(myself.select_duty_source, (index, value) => {
@@ -217,6 +295,8 @@
               },
               did: {
                 did: myself.group_id
+                // did: value.value,
+                // derpartmentname: value.text
               }
             }
           });
@@ -230,7 +310,14 @@
         var target_date = this.curRow.dutydate;
         post_data.target_date = target_date;
         post_data.group_id = this.group_id;
-
+        // var ids = $("#tb_user").bootstrapTable("getSelections");
+        //使用getSelections获取的选中的行若未选中则为none，len=0
+        //取出对象中的id
+        // var ids_str = [];
+        // $.each(ids, (index, value) => {
+        //   ids_str.push(value.id);
+        // });
+        // post_data.id = ids_str;
         $.post(
           post_url,
           post_data,
@@ -243,7 +330,36 @@
           "text"
         );
       },
+      del_row_1: function () {
+        // var date = moment('2018/06/01', "YYYY/MM/DD");
+        // alert(date);
+        var post_url = "http://127.0.0.1:8000/duty/schedulelist/";
+        // var post_url=null;
+        var post_data = {};
+        var myself = this;
+        var ids = $("#tb_user").bootstrapTable("getSelections");
+        //使用getSelections获取的选中的行若未选中则为none，len=0
+        //取出对象中的id
+        var ids_str = [];
+        $.each(ids, (index, value) => {
+          ids_str.push(value.id);
+        });
+        // console.log(ids_str);
+        post_data.id = ids_str;
+        $.post(
+          post_url,
+          post_data,
+          data => {
+            //删除成功重新查询表
 
+            // alert('删除成功');
+            //销毁table
+            $("#tb_user").bootstrapTable("destroy");
+            this.loadTable(myself.search_url, myself.search_data);
+          },
+          "text"
+        );
+      },
       append_row: function () {
         // alert('子组件调用父组件');
         var $my_table = $("#tb_user");
@@ -274,8 +390,9 @@
         var post_data = convert_data(temp_newdata);
 
         this.submitData(post_data, url_post);
-        // this.init_control();
-        this.init_User_Select();
+        //销毁table
+        // $("#tb_user").bootstrapTable("destroy");
+        // this.loadTable(this.search_url, this.search_data);
       },
 
       submitData: function (data_post, url) {
@@ -290,6 +407,30 @@
             //若返回错误信息，则提示
           }
         });
+      },
+
+      getSelectDataAndPost_bakup: function (params, code, url = null) {
+        //获取修改的信息并提交
+        //console.log(params);
+        var duty_data = new Object();
+        var myself = this;
+        duty_data.id = this.curRow.id;
+        // 以下信息是对于修改非用户时提交时所用的
+        if (code === "duty") {
+          duty_data.did = this.curRow.rDepartmentDuty.did.did;
+          duty_data.duid = params.value;
+          //duty_data.duid = curRow.rDepartmentDuty.duid.duid;
+        } else if (code === "user") {
+          duty_data.uid = params.value;
+        } else if (code === "date") {
+          duty_data.dutydate = params.value;
+        }
+        //duty_data.modity_id = params.value;
+        duty_data.code = code;
+        //序列化
+        //var duty_data_json = JSON.stringify(duty_data);
+        var url_post = "http://127.0.0.1:8000/duty/modity/";
+        myself.submitData(duty_data, url_post);
       },
 
       getSelectDataAndPost: function (params, code, url = null) {
@@ -357,6 +498,12 @@
         select_value = row.rDepartmentDuty.did.derpartmentname;
         reuslt = select_value;
 
+        // if (row.id == -999) {
+        // 	reuslt = "-";
+        // } else {
+
+        // }
+
         return reuslt;
       },
       tablerowDutyEdit(value, row, index) {
@@ -375,6 +522,13 @@
         duty_id = row.rDepartmentDuty.duid.duid;
         select_value = this.select_duty_dict[duty_id];
         reuslt = '<a href="#" class="my_select_duty">' + select_value + "</a>";
+        // if (row.id == -999) {
+        // 	reuslt = "<a href=\"#\" class=\"my_select_duty\">" + "-" + "</a>";
+        // } else {
+        // 	duty_id = row.rDepartmentDuty.duid.duid;
+        // 	select_value = this.select_duty_dict[duty_id];
+        // 	reuslt = "<a href=\"#\" class=\"my_select_duty\">" + select_value + "</a>";
+        // }
 
         return reuslt;
       },
@@ -392,16 +546,23 @@
         var user_id;
         var select_value = null;
         var reuslt = null;
-
+        // console.log(value);
+        // console.log(row);
+        // console.log(index);
         user_id = value;
-
+        // alert(user_id);
+        // console.log(user_id);
         select_value = this.select_user_dict[user_id];
         reuslt = '<a href="#" class="my_select_user">' + select_value + "</a>";
 
         if (user_id === undefined) {
           reuslt = "<a href=\"#\" class=\"my_select_user\">" + "-" + "</a>";
         }
+        // if (row.id === -999) {
+        // 	reuslt = "<a href=\"#\" class=\"my_select_user\">" + "-" + "</a>";
+        // } else {
 
+        // }
         //2 记录动作
         return reuslt;
       },
@@ -409,10 +570,8 @@
       init_User_Select() {
         //下拉框向后台传入的数据
         // var user_data = new Object();
-        var myself=this;
+        // var myself=this;
         var get_url = "http://127.0.0.1:8000/duty/userlist/";
-        //注意每次请求后台获取下拉框中的人员时，由于是向 myself.select_user_source push，所以注意先清空
-        myself.select_user_source=[];
         // 1 ajax请求后台获取当前组的人员下拉框中成员
         this.user_data.group_id = [this.group_id];
         var myself = this;
@@ -428,6 +587,8 @@
           traditional: true, //data中传入数组
           success: function (data) {
             $.each(data, function (index, obj) {
+              // console.log(obj);
+              // console.log(myself);
               //修改下拉框
               myself.select_user_source.push({
                 value: obj.uid,
