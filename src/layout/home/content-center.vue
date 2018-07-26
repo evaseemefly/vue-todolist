@@ -46,7 +46,7 @@ import moment from "moment";
 //使用require的方式，会提示找不到该js中的export的方法
 // require('../components/js/bootstrapExt/editable/test.js')
 import momenttest from "../../components/js/bootstrapExt/editable/test.js";
-
+import { getScheduleList, addSchedule } from "../../api/api.js";
 export default {
   props: ["searchResult"],
   components: {
@@ -86,30 +86,62 @@ export default {
       // this.$forceUpdated();
     },
     destroyTable: function() {
+      //销毁当前table
       $("#tb_user").bootstrapTable("destroy");
     },
     loadTable: function(url, search_condition) {
+      //根据搜索条件加载table
       var myself = this;
       //每次加载前把table中的data清空
       this.table_data = [];
       this.duty_columns = [];
       //此处改为ajax的方式通过get方式获取
       //将获取到的data写入table_data中
-      $.ajax({
-        type: "GET",
-        url: "http://127.0.0.1:8000/duty/schedulelist/",
-        processData: true,
-        dataType: "json",
-        async: false,
-        data: search_condition,
-        success: function(data) {
-          // console.log(data);
+      // $.ajax({
+      //   type: "GET",
+      //   url: "http://127.0.0.1:8000/duty/schedulelist/",
+      //   processData: true,
+      //   dataType: "json",
+      //   async: false,
+      //   data: search_condition,
+      //   success: function(data) {
+      //     // console.log(data);
+      //     var temp_duty = new Object();
+      //     if (data[0].DutyUserList.length > 0) {
+      //       //加载成功后将数据推入table_data中
+      //       //注意jquery的each后面的function的参数有两个，index，value
+      //       $.each(data, (index, value) => {
+      //         // console.log(value);
+      //         temp_duty = new Object();
+      //         var temp_dutydate = value.dutydate;
+      //         myself.append_last_date = value.dutydate;
+      //         temp_duty["dutydate"] = temp_dutydate;
+      //         $.each(value.DutyUserList, (temp_index, temp_value) => {
+      //           var temp_duty_id =
+      //             "duty" + temp_value.rDepartmentDuty.duid.duid;
+      //           //向duty_columns中插入当前table的列头
+      //           myself.duty_columns.push(temp_duty_id);
+
+      //           var temp_user_id = temp_value.user.uid;
+      //           temp_duty[temp_duty_id] = temp_user_id;
+      //         });
+
+      //         myself.table_data.push(temp_duty);
+      //       });
+      //     }
+      //   }
+      // });
+      //不再使用ajax的方式，改为axios的方式
+      getScheduleList(search_condition).then(res => {
+        var data = res.data;
+        //此处需要先判断返回的res.data是否为空
+        if (data.length > 0) {
           var temp_duty = new Object();
           if (data[0].DutyUserList.length > 0) {
             //加载成功后将数据推入table_data中
             //注意jquery的each后面的function的参数有两个，index，value
             $.each(data, (index, value) => {
-              // console.log(value);
+             
               temp_duty = new Object();
               var temp_dutydate = value.dutydate;
               myself.append_last_date = value.dutydate;
@@ -118,7 +150,8 @@ export default {
                 var temp_duty_id =
                   "duty" + temp_value.rDepartmentDuty.duid.duid;
                 //向duty_columns中插入当前table的列头
-                myself.duty_columns.push(temp_duty_id);
+                //由init_Duty_Select方法完成
+                // myself.duty_columns.push(temp_duty_id);
 
                 var temp_user_id = temp_value.user.uid;
                 temp_duty[temp_duty_id] = temp_user_id;
@@ -128,56 +161,36 @@ export default {
             });
           }
         }
+
+        //初始化下拉菜单
+        this.init_Select();
+        //加载table表
+        this.init_Table();
+        //
+        this.init_control();
       });
-
-      myself.init_Select();
-
-      //加载table
-      $("#tb_user").bootstrapTable({
-        toolbar: "#toolbar",
-        idField: "Id",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        showRefresh: true,
-        clickToSelect: true, //设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
-        search: true,
-        striped: true, //使表格带有条纹
-        queryParams: function(param) {
-          return search_condition;
-        },
-
-        columns: myself.columns_duty,
-        data: myself.table_data,
-        onEditableSave: function(field, row, oldValue, $el) {},
-        onClickRow: function(row, $element) {
-          myself.curRow = row;
-        },
-        onClickCell: (field, value, row, $elemen) => {
-          myself.curCell = {
-            field: field,
-            value: value,
-            row: row
-          };
-        },
-        onPageChange: function(params) {
-          myself.init_control();
-        },
-        //加载成功后执行
-        onLoadSuccess: function(aa, bb, cc) {
-          myself.init_control();
-          //   alert('成功加载页面');
-        }
-      });
-
-      myself.init_control();
     },
 
     defaultData() {
       var id = "-999";
     },
 
+    convert_data(temp_data) {
+      var post_data = new Object();
+      post_data.id = temp_data.id;
+      post_data.code = "all";
+      post_data.did = temp_data.did;
+      post_data.duids = [];
+      $.each(temp_data.DutyUserList, (index, value) => {
+        post_data.duids.push(value.rDepartmentDuty.duid.duid);
+      });
+      post_data.selected_date = temp_data.dutydate;
+      return post_data;
+    },
+
     newTableData() {
+      var id = "-999";
+      //向table后追加一行默认值得数据行
       const temp_data = new Object();
       var myself = this;
       var temp_append_last_date = moment(myself.append_last_date);
@@ -186,8 +199,6 @@ export default {
       );
       var lastday_month = temp_append_last_date;
       lastday_month.endOf("month");
-
-      // var temp_append_last_date_str=temp_append_last_date.format('YYYY-MM-DD');
 
       var temp_append_last_date_add1 = moment(myself.append_last_date).add(
         1,
@@ -206,50 +217,41 @@ export default {
         temp_data[value] = -999;
       });
       myself.table_data.push(temp_data);
+      var row = {
+        id: id,
+        dutydate: temp_append_last_date_add1.format("YYYY-MM-DD"),
 
-      myself.init_Select();
-      myself.destroyTable();
-      //加载table
-      $("#tb_user").bootstrapTable({
-        toolbar: "#toolbar",
-        idField: "Id",
-        pagination: true,
-        pageNumber: 1,
-        pageSize: 10,
-        showRefresh: true,
-        clickToSelect: true, //设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
-        search: true,
-        striped: true, //使表格带有条纹
-        queryParams: function(param) {
-          return search_condition;
-        },
-
-        columns: myself.columns_duty,
-        data: myself.table_data,
-        onEditableSave: function(field, row, oldValue, $el) {},
-        onClickRow: function(row, $element) {
-          myself.curRow = row;
-        },
-        onClickCell: (field, value, row, $elemen) => {
-          myself.curCell = {
-            field: field,
-            value: value,
-            row: row
-          };
-        },
-        onPageChange: function(params) {
-          myself.init_control();
-        },
-        //加载成功后执行
-        onLoadSuccess: function(aa, bb, cc) {
-          myself.init_control();
-          //   alert('成功加载页面');
-        }
+        did: this.group_id,
+        DutyUserList: []
+      };
+      //循环向其中添加rDepartmentDuty
+      $.each(myself.select_duty_source, (index, value) => {
+        // console.log(value);
+        row.DutyUserList.push({
+          rDepartmentDuty: {
+            duid: {
+              // duid: myself.group_id,
+              duid: value.value,
+              dutyname: value.text
+            },
+            did: {
+              did: myself.group_id
+            }
+          }
+        });
       });
 
-      myself.init_control();
+      var post_data = this.convert_data(row);
+      addSchedule(post_data);
+      this.init_Select();
+      this.destroyTable();
+      // this.submitData(post_data);
+      //加载table
+      this.init_Table();
+      this.init_control();
     },
 
+    //暂时弃用
     newData() {
       var id = "-999";
       var myself = this;
@@ -328,7 +330,6 @@ export default {
       var $my_table = $("#tb_user");
       var temp_newdata = this.newData();
       //table最后追加一行
-      // this.newTableData();
       $my_table.bootstrapTable("append", temp_newdata);
       //scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
       $my_table.bootstrapTable("scrollTo", "bottom");
@@ -373,35 +374,13 @@ export default {
         追加方式2：
           参考loadTable中的追加方法
       */
+     //注意在创建新的一行数据时，需要先判断append_last_date是否未定义
+
       this.newTableData();
 
       //scrollTo 	value 	滚动到指定位置，单位为 px，设置 'bottom' 表示跳到最后。
       $my_table.bootstrapTable("scrollTo", "bottom");
-      //初始化行内样式
-      this.init_control();
-      //将新增的这一行数据提交至后台（默认值）
-      var url_post = "http://127.0.0.1:8000/duty/schedulelist/creat/";
-      // temp_newdata.id = -999;
-
-      function convert_data(temp_data) {
-        var post_data = new Object();
-        post_data.id = temp_data.id;
-        post_data.code = "all";
-        post_data.did = temp_data.did;
-        post_data.duids = [];
-        $.each(temp_data.DutyUserList, (index, value) => {
-          post_data.duids.push(value.rDepartmentDuty.duid.duid);
-        });
-        post_data.selected_date = temp_data.dutydate;
-        return post_data;
-      }
-
-      // var post_data = convert_data(temp_newdata);
-
-      // this.submitData(post_data, url_post);
-      // this.init_control();
-      // this.init_User_Select();
-      // this.loadTable()
+      
     },
 
     submitData: function(data_post, url) {
@@ -567,6 +546,50 @@ export default {
         }
       });
     },
+
+    init_Table() {
+      /*
+        根据table_data，columns_duty等加载table
+
+      */
+      var myself = this;
+      //加载table
+      $("#tb_user").bootstrapTable({
+        toolbar: "#toolbar",
+        idField: "Id",
+        pagination: true,
+        pageNumber: 1,
+        pageSize: 10,
+        showRefresh: true,
+        clickToSelect: true, //设置 true 将在点击行时，自动选择 rediobox 和 checkbox。
+        search: true,
+        striped: true, //使表格带有条纹
+        queryParams: function(param) {
+          return search_condition;
+        },
+
+        columns: myself.columns_duty,
+        data: myself.table_data,
+        onEditableSave: function(field, row, oldValue, $el) {},
+        onClickRow: function(row, $element) {
+          myself.curRow = row;
+        },
+        onClickCell: (field, value, row, $elemen) => {
+          myself.curCell = {
+            field: field,
+            value: value,
+            row: row
+          };
+        },
+        onPageChange: function(params) {
+          myself.init_control();
+        },
+        //加载成功后执行
+        onLoadSuccess: function(aa, bb, cc) {
+          myself.init_control();
+        }
+      });
+    },
     init_Duty_Select() {
       var myself = this;
       //2 ajax请求后台获取当前组的岗位
@@ -601,6 +624,7 @@ export default {
               editable: true,
               formatter: myself.tablerowUserEdit
             });
+            myself.duty_columns.push("duty" + obj.duid);
             //刷新岗位字典
             myself.select_duty_dict[obj.duid] = obj.dutyname;
           });
@@ -695,6 +719,8 @@ export default {
       myself.group = data.group;
       myself.search_data = data;
       myself.search_url = url;
+      //注意此处需要对当前的append_last_date赋值，将由search传递过来的selected_date，赋给他
+      myself.append_last_date=data.selected_date;
       //提取到外侧，不放在loadTable中调用了
       // myself.init_Select();
       //直接调用loadTable方法，loadTable最后会执行init_control()方法
