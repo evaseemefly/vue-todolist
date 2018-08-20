@@ -287,7 +287,7 @@ export default {
         DutyUserList: []
       };
       //循环向其中添加rDepartmentDuty
-      $.each(myself.select_duty_source, (index, value) => {
+      $.each(myself.select_duty_source,  (index, value) => {
         // console.log(value);
         row.DutyUserList.push({
           rDepartmentDuty: {
