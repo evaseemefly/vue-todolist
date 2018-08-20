@@ -157,9 +157,9 @@
         this.selected = 3;
         this.selected_group = 2;
       },
-      testsummit: function () {
-        bus.$emit("on-message", "search组件的消息");
-      },
+      // testsummit: function () {
+      //   bus.$emit("on-message", "search组件的消息");
+      // },
       summit: function () {
         var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
@@ -201,7 +201,7 @@
 
         bus.$emit("on-loadTable", search_url, search_temp);
       },
-      getSchedulelist: function () {},
+      // getSchedulelist: function () {},
       //获取群组和群组对应的人员
       getgroupuser() {
         //根据当前的did获取该did拥有的user
