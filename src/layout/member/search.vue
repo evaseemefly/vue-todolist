@@ -118,6 +118,7 @@
       }
     },
     methods: {
+      //对搜索框中的日期进行初始化
       dateDefind: function () {
         var d, s;
         var myself = this;
@@ -149,9 +150,13 @@
             // this.selected_date = value;
           });
       },
+
+      //暂时不用
       modifiedDate: function (date_val) {
         // this.selected_date=date_val;
       },
+
+      //选择框的初值设置
       dataInit: function () {
         var myself = this;
         this.selected = 3;
@@ -160,8 +165,11 @@
       // testsummit: function () {
       //   bus.$emit("on-message", "search组件的消息");
       // },
+
+      //按照搜索条件进行搜索
       summit: function () {
         var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
+        // var search_url = "http://128.5.9.20:8000/duty/schedulelist/";
         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
         var myself = this;
         /*
@@ -201,7 +209,7 @@
 
         bus.$emit("on-loadTable", search_url, search_temp);
       },
-      // getSchedulelist: function () {},
+      
       //获取群组和群组对应的人员
       getgroupuser() {
         //根据当前的did获取该did拥有的user
