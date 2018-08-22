@@ -168,8 +168,8 @@
 
       //按照搜索条件进行搜索
       summit: function () {
-        var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
-        // var search_url = "http://128.5.9.20:8000/duty/schedulelist/";
+        // var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
+        var search_url = "http://128.5.9.20:8015/duty/schedulelist/";
         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
         var myself = this;
         /*
