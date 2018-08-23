@@ -75,6 +75,8 @@
     },
     data: function () {
       return {
+        // host:'http://127.0.0.1:8000/',
+        host:'http://128.5.9.20:8015',
         selected_user: 1,
         options_user: [],
         selected_group: 2,
@@ -168,8 +170,10 @@
 
       //按照搜索条件进行搜索
       summit: function () {
+        var myself=this;
+        var search_url=`${myself.host}duty/schedulelist/`;
         // var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
-        var search_url = "http://128.5.9.20:8015/duty/schedulelist/";
+        // var search_url = "http://128.5.9.20:8015/duty/schedulelist/";
         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
         var myself = this;
         /*
@@ -216,7 +220,8 @@
         var data_get = null;
         var myself = this;
         // var temp=this;
-        var get_groupAnduser_url = "http://127.0.0.1:8000/duty/grouplist/";
+        // var get_groupAnduser_url = "http://127.0.0.1:8000/duty/grouplist/";
+        var get_groupAnduser_url =`${myself.host}duty/grouplist/` ;
         var post_data = {
           department_id: this.did
         };
