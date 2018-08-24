@@ -75,8 +75,8 @@
     },
     data: function () {
       return {
-        // host:'http://127.0.0.1:8000/',
-        host:'http://128.5.9.20:8015',
+        host:'http://127.0.0.1:8000/',
+        // host: 'http://128.5.9.20:8015',
         selected_user: 1,
         options_user: [],
         selected_group: 2,
@@ -170,8 +170,8 @@
 
       //按照搜索条件进行搜索
       summit: function () {
-        var myself=this;
-        var search_url=`${myself.host}duty/schedulelist/`;
+        var myself = this;
+        var search_url = `${myself.host}duty/schedulelist/`;
         // var search_url = "http://127.0.0.1:8000/duty/schedulelist/";
         // var search_url = "http://128.5.9.20:8015/duty/schedulelist/";
         //注意若想让vue中的方法访问data，需要使用this，最好通过self=this的方式
@@ -213,7 +213,7 @@
 
         bus.$emit("on-loadTable", search_url, search_temp);
       },
-      
+
       //获取群组和群组对应的人员
       getgroupuser() {
         //根据当前的did获取该did拥有的user
@@ -221,7 +221,7 @@
         var myself = this;
         // var temp=this;
         // var get_groupAnduser_url = "http://127.0.0.1:8000/duty/grouplist/";
-        var get_groupAnduser_url =`${myself.host}duty/grouplist/` ;
+        var get_groupAnduser_url = `${myself.host}duty/grouplist/`;
         var post_data = {
           department_id: this.did
         };
@@ -256,8 +256,8 @@
         this.options_group = options_group;
         this.dict_users = dict_users;
         //每次获取时需要清空当前options_user的列表
-        myself.options_user=[];
-        $.each(data_get[0].uid,(index,val)=>{
+        myself.options_user = [];
+        $.each(data_get[0].uid, (index, val) => {
           myself.options_user.push({
             text: val.username,
             value: val.uid
@@ -283,5 +283,9 @@
 <style>
   #searchbar {
     padding: 15px;
+    padding-bottom: 0px;
   }
+  /* #searchbar{
+  padding-bottom: 0px;
+} */
 </style>

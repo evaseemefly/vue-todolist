@@ -1,10 +1,12 @@
 <template>
-  <div id="app" class="container">
+  <!-- <div id="app" class="container"> -->
+  <div id="app">
     <myheader :groups=departments
               @changeIndex="changeIndex"></myheader>
     <!-- <leftmenu :groups=groups
               @changeIndex=changeIndex(group_index)></leftmenu> -->
-    <leftmenu :groups=groups></leftmenu>
+    <!-- <leftmenu :groups=groups></leftmenu> -->
+    <!-- <lefcalendar></lefcalendar> -->
     <router-view></router-view>
   </div>
 </template>
@@ -14,6 +16,7 @@
   import Search from "../member/search.vue";
   import mycontent from "./content-main.vue";
   import leftmenu from "../left/left-menu.vue";
+  // import lefcalendar from "../left/left-calendar.vue";
   // import header from "./layout/header.vue";
   import myheader from "../head/head.vue";
   import {
@@ -39,6 +42,7 @@
       Search,
       mycontent,
       leftmenu,
+      // lefcalendar,
       myheader
     },
     methods: {

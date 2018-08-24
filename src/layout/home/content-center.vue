@@ -1,8 +1,8 @@
 <template>
-  <div class="panel-body">
-    <div class="panel panel-primary">
-      <div class="panel-heading">排班详情</div>
-      <div class="panel-body table-parent-panel">
+  <div id="body_panel" class="panel-body">
+    <div class="panel">
+      <div class="panel-heading my-panel-heading">排班详情</div>
+      <div class="panel-body my-panel-body table-parent-panel">
         <Toolbar @add_row="append_row" @del_row="del_row"></Toolbar>
         <div id="table_parent">
           <table v-show="select_duty_source.length>0" data-toggle="table">
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+  
+
   // import bus from "../assets/eventBus";
   import bus from "../../assets/eventBus.js";
   import Toolbar from "../member/toolbar.vue";
@@ -57,8 +59,8 @@
     },
     data() {
       return {
-        // host:'http://127.0.0.1:8000',
-        host: 'http://128.5.9.20:8015',
+        host:'http://127.0.0.1:8000',
+        // host: 'http://128.5.9.20:8015',
         schedulelist: [],
         select_user_dict: {}, //值班人员字典
         select_duty_dict: {}, //岗位职责字典
@@ -746,3 +748,17 @@
     }
   };
 </script>
+
+<style scoped>
+@import "../../components/css/common/panel.css";
+#body_panel{
+  /* display: inline-block;
+  margin-left: 600px;
+  width: 60%; */
+  padding-top: 0px;
+}
+
+.my-panel-body{
+  
+}
+</style>
