@@ -43,6 +43,12 @@ import moment from 'moment'
 import './components/js/bootstrapExt/table/bootstrap-table.js'
 import './components/js/bootstrapExt/editable/bootstrap-editable.js'
 
+//引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts=echarts;
+
+// 加入flatui的部分样式
+import './components/css/flatui/flat-ui.css'
 
 // require('bootstrap-loader')
 // require('bootstrap')
