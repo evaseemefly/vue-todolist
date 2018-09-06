@@ -35,8 +35,6 @@
 </template>
 
 <script>
-  
-
   // import bus from "../assets/eventBus";
   import bus from "../../assets/eventBus.js";
   import Toolbar from "../member/toolbar.vue";
@@ -50,7 +48,8 @@
   import momenttest from "../../components/js/bootstrapExt/editable/test.js";
   import {
     getScheduleList,
-    addSchedule
+    addSchedule,
+    delSchedule
   } from "../../api/api.js";
   export default {
     props: ["searchResult"],
@@ -59,7 +58,7 @@
     },
     data() {
       return {
-        host:'http://127.0.0.1:8000',
+        host: 'http://127.0.0.1:8000',
         // host: 'http://128.5.9.20:8015',
         schedulelist: [],
         select_user_dict: {}, //值班人员字典
@@ -321,17 +320,23 @@
         post_data.target_date = target_date;
         post_data.group_id = this.group_id;
 
-        $.post(
-          post_url,
-          post_data,
-          data => {
-            //删除成功重新查询表
-            //销毁table
-            $("#tb_user").bootstrapTable("destroy");
-            this.loadTable(myself.search_url, myself.search_data);
-          },
-          "text"
-        );
+        // $.post(
+        //   post_url,
+        //   post_data,
+        //   data => {
+        //     //删除成功重新查询表
+        //     //销毁table
+        //     $("#tb_user").bootstrapTable("destroy");
+        //     this.loadTable(myself.search_url, myself.search_data);
+        //   },
+        //   "text"
+        // );
+
+        delSchedule(post_data).then(res => {
+          $("#tb_user").bootstrapTable("destroy");
+          this.loadTable(myself.search_url, myself.search_data);
+        })
+
       },
 
       append_row_backup: function () {
@@ -412,6 +417,7 @@
         //console.log(params);
         var duty_data = new Object();
         var myself = this;
+        // var cur = this.curRow;
         // duty_data.id = this.curRow.id;
         // 1 获取当前选中行的指定时间
         var target_date = this.curCell.row.dutydate;
@@ -429,9 +435,12 @@
           duty_data.duid = duty_id;
           duty_data.uid = params.value;
         } else if (code === "date") {
+          // 修改后的日期
           duty_data.dutydate = params.value;
+          // 之前的日期
+          duty_data.old_date=myself.curRow.dutydate
         }
-        console.log(duty_data);
+        // console.log(duty_data);
         //duty_data.modity_id = params.value;
         duty_data.code = code;
         //序列化
@@ -750,15 +759,14 @@
 </script>
 
 <style scoped>
-@import "../../components/css/common/panel.css";
-#body_panel{
-  /* display: inline-block;
+  @import "../../components/css/common/panel.css";
+
+  #body_panel {
+    /* display: inline-block;
   margin-left: 600px;
   width: 60%; */
-  padding-top: 0px;
-}
+    padding-top: 0px;
+  }
 
-.my-panel-body{
-  
-}
+  .my-panel-body {}
 </style>
