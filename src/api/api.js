@@ -9,7 +9,7 @@ axios.interceptors.request.use(
   config => {
     let token = cookie.getCookie('token');
     console.log(token);
-    if (token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
       config.headers.authorization = `JWT ${token}`;
     }
     return config;
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
           });
       }
     }
-    return Promise.reject(error.response.data);   // 返回接口返回的错误信息
+    return Promise.reject(error.response.data); // 返回接口返回的错误信息
   });
 //   Vue.prototype.$http = axios;
 // axios.defaults.withCredentials = true;
@@ -50,17 +50,25 @@ export const getDepDutyList = paramas => {
   return axios.get(`${host}/user/duthdepdutylist/`)
 }
 
-export /**
+export
+/**
  *根据查询条件获取指定月份的全部值班信息
  *
  * @param {*} data
  * @returns
  */
-  const getScheduleList = data => {
-    return axios.get(`${host}/duty/schedulelist/`, { params: data });
-  }
+const getScheduleList = data => {
+  return axios.get(`${host}/duty/schedulelist/`, {
+    params: data
+  });
+}
 
+//删除某一日的值班信息
+export const delSchedule = data => {
+  return axios.post(`${host}/duty/schedulelist/del/`, data);
+}
 
+//添加某一日的值班信息
 export const addSchedule = data => {
   return axios.post(`${host}/duty/schedulelist/creat/`, data);
 }
