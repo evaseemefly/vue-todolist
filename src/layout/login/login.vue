@@ -1,396 +1,228 @@
 <template>
-  <div>
-    <div class="c-box bg-box">
-      <div class="login-box clearfix" style="margin-top:10px">
-        <div class="fr form-box">
-          <h2>预报中心值班系统</h2>
-          <form id="jsLoginForm" autocomplete="off">
+  <div id="my-form">
+    <div class="my-container">
+      <div class="login-box">
+        <div class="login-form">
+          <form>
+            <div>
+              <span class="login-title">值班系统</span>
+              <div class="login-wrap">
+                <!-- <span>用户名</span> -->
+                <label for="exampleInputName2">用户名</label>
+                <input type="text" v-model="userName" class="form-control" id="exampleInputName2" placeholder="用户名">
+              </div>
+              <div class="login-wrap">
+                <!-- <span>用户名</span> -->
+                <label for="exampleInputName2">密码</label>
+                <input type="text" v-model="parseWord" class="form-control" id="exampleInputName2" placeholder="密码">
+              </div>
+              <div class="login-wrap">
+                <div class="login-form-btn">
+                  <div class="login-btn-div"></div>
+                  <button class="login-btn" @click="login">登录</button>
+                </div>
 
-            <input type="hidden" name="csrfmiddlewaretoken" value="ywSlOHdiGsK6VFB6iyhnB1B30khmz8SU">
+              </div>
+            </div>
 
-            <div class="form-group marb20">
-              <label>用&nbsp;户&nbsp;名</label>
-              <input name="account_l" id="account_l" type="text" v-model="userName" placeholder="用户名">
-            </div>
-            <p class="error-text" v-show="userNameError">{{userNameError}}</p>
-            <div class="form-group marb8">
-
-              <label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
-              <input name="password_l" id="password_l" type="password" v-model="parseWord"  placeholder="请输入您的密码">
-            </div>
-            <p class="error-text" v-show="parseWordError">{{parseWordError}}</p>
-            <!--        <div class="error btns login-form-tips" id="jsLoginTips" v-show="error"><p>用户名或密码错误</p></div> -->
-            <div class="auto-box marb38">
-            </div>
-            <p class="error-text" v-show="error">{{error}}</p>
-            <input class="btn btn-blue" id="jsLoginBtn" type="button" @click="login" value="立即登录 &gt; ">
           </form>
         </div>
 
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
-import { login } from "../../api/api";
-import cookie from "../../common/js/cookie.js";
-export default {
-  data() {
-    return {
-      userName: "",
-      parseWord: "",
-      overdue: 1
-    };
-  },
-  methods: {
-    login() {
-      var myself = this;
-      // let overdue=1;
-      login({
-        username: this.userName,
-        password: this.parseWord
-      })
-      .then(function(response){
-          //存储用户名
-          cookie.setCookie("name", myself.userName, myself.overdue);
-          //存储后台返回的token
-          cookie.setCookie("token", response.data.token, myself.overdue);
-          localStorage.token=response.data.token;
-        //   //成功并跳转
-        //   // this.$router.push({name:'index'});
-        //   // this.$router.push({ path: "/home" });
+  import {
+    login
+  } from "../../api/api";
+  import cookie from "../../common/js/cookie.js";
+  export default {
+    data() {
+      return {
+        userName: "",
+        parseWord: "",
+        overdue: 1
+      };
+    },
+    methods: {
+      login() {
+        var myself = this;
+        // let overdue=1;
+        login({
+            username: this.userName,
+            password: this.parseWord
+          })
+          .then(function (response) {
+            //存储用户名
+            cookie.setCookie("name", myself.userName, myself.overdue);
+            //存储后台返回的token
+            cookie.setCookie("token", response.data.token, myself.overdue);
+            localStorage.token = response.data.token;
+            //   //成功并跳转
+            //   // this.$router.push({name:'index'});
+            //   // this.$router.push({ path: "/home" });
 
-        //   // 字符串
-          myself.$router.push("/home");
-      })
-        // .then(response => {
-        //   console.log(response);
-        //   //cookie中写入部分信息
-        //   //存储用户名
-        //   cookie.setCookie("name", this.userName, this.overdue);
-        //   //存储后台返回的token
-        //   cookie.setCookie("token", response.data.token, this.overdue);
-        //   //成功并跳转
-        //   // this.$router.push({name:'index'});
-        //   // this.$router.push({ path: "/home" });
+            //   // 字符串
+            myself.$router.push("/home");
+          })
+          // .then(response => {
+          //   console.log(response);
+          //   //cookie中写入部分信息
+          //   //存储用户名
+          //   cookie.setCookie("name", this.userName, this.overdue);
+          //   //存储后台返回的token
+          //   cookie.setCookie("token", response.data.token, this.overdue);
+          //   //成功并跳转
+          //   // this.$router.push({name:'index'});
+          //   // this.$router.push({ path: "/home" });
 
-        //   // 字符串
-        //   this.$router.push("/home");
+          //   // 字符串
+          //   this.$router.push("/home");
 
-        //   // 对象
-        //   this.$router.push({ path: "/home" });
+          //   // 对象
+          //   this.$router.push({ path: "/home" });
 
-        //   // 命名的路由
-        //   this.$router.push({ name: "home", params: { userId: wise } });
-        // })
-        .catch(err => {
-          console.log(err);
-        });
+          //   // 命名的路由
+          //   this.$router.push({ name: "home", params: { userId: wise } });
+          // })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.error-text {
-  color: #fa8341;
-}
-.other-form li {
-  padding-bottom: 8px;
-  margin-bottom: 10px;
-}
-.other-form li h5 {
-  font-size: 12px;
-}
+  #my-form {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(45deg, #588FE9 25%, #16a085 50%);
+    /* height: 100%; */
+    /* min-height: 100%; */
+  }
 
-.other-login a {
-  margin-top: 0;
-  vertical-align: top;
-  margin-right: 10px;
-  /* background: url(../../static/images/login/other-login-bg.png) center no-repeat; */
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  overflow: hidden;
-}
-.other-login a.qq {
-  background-position: -40px 0;
-}
-.other-login a.sina {
-  background-position: 0 0;
-}
-.other-login a.alipay {
-  background-position: -80px 0;
-}
-.other-login a.weixin {
-  background-position: -200px 0;
-}
-.c-box {
-  width: 100%;
-  min-width: 1190px;
-  overflow: hidden;
-}
-.bg-box {
-  /* background: url(../../static/images/login/loginBg1.jpg) no-repeat center
-    center; */
-}
-.login-box {
-  width: 853px;
-  margin: 0px auto;
-  /* background: rgba(37, 37, 223, 0.659) */
-}
-.clearfix::after {
-  clear: both;
-  content: " ";
-  display: block;
-  font-size: 0;
-  height: 0;
-  visibility: hidden;
-}
+  /* body {
+            background-color: #ECEFF1;
+            color: #37474F;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+        } */
+  .my-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
 
-.hd-login {
-  position: relative;
-  height: 68px;
-  line-height: 68px;
-  margin-bottom: 15px;
-  padding-top: 32px;
-  padding-left: 190px;
-  /*  background:url(../../static/images/login/logo.png) no-repeat 0 center;*/
-}
-.index-logo {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: block;
-  width: 190px;
-  height: 100px;
-  cursor: pointer;
-}
-.index-font {
-  float: right;
-  height: 20px;
-  line-height: 20px;
-  margin-top: 48px;
-  padding-left: 20px;
-  color: #fff;
-  /*background:url(../../static/images/login/homepage.png) no-repeat 0 top;*/
-}
-.fl {
-  float: left !important;
-}
-.fr {
-  /* float: right !important; */
-}
-.slide {
-  position: relative;
-  width: 483px;
-  height: 472px;
-  background: #fff;
-  overflow: hidden;
-}
-.imgslide {
-  width: 100%;
-  height: 100%;
-}
-.imgslide li {
-  float: left;
-}
-.imgslide .dots {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  width: 80px;
-  margin-left: -40px;
-}
-.imgslide .dots li {
-  float: left;
-  margin: 5px;
-  background: #fff;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  color: #fff;
-  text-align: center;
-  cursor: pointer;
-  overflow: hidden;
-}
-.imgslide .dots li.active {
-  background: #6ec559;
-  color: #6ec559;
-}
-.unslider-arrow {
-  position: absolute;
-  width: 33px;
-  height: 50px;
-  top: 45%;
-  cursor: pointer;
-  z-index: 100;
-}
-.unslider-arrow.prev {
-  left: 0;
-  /* background: url(../../static/images/login/slide_l.png) no-repeat center center; */
-}
-.unslider-arrow.prev:hover {
-  /* background: url(../../static/images/login/slide_l_1.png) no-repeat center center; */
-}
-.unslider-arrow.next {
-  right: 0;
-  /* background: url(../../static/images/login/slide_r.png) no-repeat center center; */
-}
-.unslider-arrow.next:hover {
-  /* background: url(../../static/images/login/slide_r_1.png) no-repeat center center; */
-}
-.hd-login > h1 {
-  float: left;
-  color: #fff;
-  font-size: 30px;
-  font-weight: normal;
-}
+    /* 主轴上的对其方式 */
+    justify-content: center;
+    /* 交叉轴上的对其方式 */
+    align-items: center;
+  }
 
-.form-box .form-group.focus,
-.form-box .valcode.error {
-  border-color: #6ec558;
-  box-shadow: 0 0 5px #6ec558;
-}
-.form-box .form-group.blur,
-.form-box .valcode.blur {
-  border-color: #ccc;
-}
-.form-box .form-group.errorput,
-.form-box .valcode.errorput input {
-  border-color: #f00;
-  box-shadow: 0 0 5px #aa0b0b;
-}
-.form-box a {
-  color: #666;
-}
-.form-box a:hover {
-  color: #6ec559;
-}
-.form-box {
-  position: relative;
-  width: 290px;
-  height: 472px;
-  padding: 0 40px;
-  background: #fff;
-  color: #666;
-  margin-right: auto;
-  margin-left: auto;
-}
-.form-box > h2,
-.form-box > .tab {
-  height: 54px;
-  line-height: 54px;
-  margin-bottom: 34px;
-  font-size: 18px;
-  font-weight: normal;
-  color: #333;
-  border-bottom: 1px solid #eaeaea;
-}
-.form-box > .tab > h2 {
-  float: left;
-  width: 90px;
-  height: 53px;
-  line-height: 53px;
-  cursor: pointer;
-  font-weight: normal;
-  text-align: center;
-}
-.form-box > .tab > h2.active {
-  border-bottom: 3px solid #6ec55a;
-  color: #333;
-}
+  .login-box {
+    width: 500px;
+    height: 500px;
+    background: #fff;
+    border-radius: 10px;
+    /* width: 400px; */
+    overflow: hidden;
 
-.form-group {
-  position: relative;
-  width: 288px;
-  height: 38px;
-  border: 1px solid #dedede;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  overflow: hidden;
-}
-.form-group > label {
-  float: left;
-  width: 72px;
-  height: 20px;
-  line-height: 20px;
-  margin-top: 9px;
-  border-right: 1px solid #eaeaea;
-  text-align: center;
-}
-.form-group > input {
-  float: left;
-  width: 195px;
-  line-height: 24px;
-  padding: 7px 10px;
-  border: 0;
-  line-height: normal\9;
-  padding: 12px 10px 9px\9;
-}
-.form-group .mobile-register-captcha {
-  width: 85px;
-}
-.form-group .captcha {
-  cursor: pointer;
-}
-.marb20 {
-  margin-bottom: 8px;
-}
-.marb8 {
-  margin-bottom: 8px;
-  margin-top: 20px;
-}
-.marb38 {
-  margin-bottom: 38px;
-}
-.error {
-  background: #fb8344;
-  color: #fff !important;
-  text-align: center;
-  height: 40px !important;
-  line-height: 40px !important;
-  margin: 10px 0;
-}
-.auto-box {
-  height: 18px;
-  line-height: 18px;
-}
-.auto-box > label > input {
-  vertical-align: sub;
-}
-.auto-box > label > a {
-  color: #6ec559;
-}
-.btn {
-  width: 100%;
-  height: 42px;
-  line-height: 42px;
-  font-size: 14px;
-  color: #fff;
-  border: 0;
-  cursor: pointer;
-}
-.btn-blue {
-  background: rgba(9, 9, 177, 0.796);
-}
-.btn-green {
-  background: #6ec55a;
-}
-.btn-green:hover {
-  background: #5dbf45;
-}
-.form-p {
-  position: absolute;
-  left: 40px;
-  bottom: 25px;
-}
-.form-p > a {
-  color: #fa8341;
-}
-.form-p > a:hover {
-  color: #666;
-}
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-top: 65px;
+    padding-bottom: 45px;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .login-title {
+    display: block;
+    font-family: Poppins-Bold;
+    font-size: 39px;
+    color: #333333;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .login-wrap {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .login-wrap>input {
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.2;
+    /* display: block; */
+    width: 100%;
+    height: 55px;
+    background: transparent;
+    padding: 0 7px 0 43px;
+
+    outline: none;
+    border: none;
+  }
+
+  .login-form-btn {
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 1;
+    border-radius: 25px;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .login-btn-div {
+    position: absolute;
+    z-index: -1;
+    width: 300%;
+    height: 100%;
+    /* background: #a64bf4; */
+    /* background: -webkit-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
+			background: -o-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
+			background: -moz-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff); */
+    /* background: linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff); */
+    background: linear-gradient(45deg, #588FE9 25%, #16a085 50%);
+    top: 0;
+    left: -100%;
+    /* -webkit-transition: all 0.4s;
+			-o-transition: all 0.4s;
+			-moz-transition: all 0.4s; */
+    transition: all 0.4s;
+  }
+
+  .login-btn-div:hover {
+    background: linear-gradient(45deg, #161fa0 50%, rgb(168, 88, 233) 25%);
+  }
+
+  .login-btn {
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    /* display: -webkit-box;
+			display: -webkit-flex;
+			display: -moz-box;
+			display: -ms-flexbox; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 50px;
+
+    border: none;
+    background: transparent;
+  }
 </style>
