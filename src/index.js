@@ -46,17 +46,25 @@ import './components/js/bootstrapExt/editable/bootstrap-editable.js'
 //引入echarts
 import echarts from 'echarts'
 Vue.prototype.$echarts=echarts;
-
 // 加入flatui的部分样式
 import './components/css/flatui/flat-ui.css'
-
+// 加入iview
+import iView from 'iview'
+import 'iview/dist/styles/iview.css'
 // require('bootstrap-loader')
 // require('bootstrap')
+
 Vue.prototype.moment=moment
 Vue.config.devtools=true;
 Vue.use(VueRouter)
+Vue.use(iView)
 const root=document.createElement("div")
 document.body.appendChild(root)
+
+iView.Message.config({
+    top:70,
+    duration:1.5
+})
 
 // 路由配置
 const RouterConfig = {

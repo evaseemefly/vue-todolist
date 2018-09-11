@@ -1,5 +1,6 @@
 <template>
   <div id="body_panel" class="panel-body">
+    <myMsg :msg='msg' ref="myMsg"></myMsg>
     <div class="panel">
       <div class="panel-heading my-panel-heading">排班详情</div>
       <div class="panel-body my-panel-body table-parent-panel">
@@ -38,7 +39,8 @@
   // import bus from "../assets/eventBus";
   import bus from "../../assets/eventBus.js";
   import Toolbar from "../member/toolbar.vue";
-
+  //引入一下公共的class
+  import myMsg from "../member/message.vue";
   import "../../components/js/common/dateFormart.js";
   // import "../components/js/common/dateFormart.js";
   import moment from "moment";
@@ -54,7 +56,8 @@
   export default {
     props: ["searchResult"],
     components: {
-      Toolbar
+      Toolbar,
+      myMsg
     },
     data() {
       return {
@@ -75,7 +78,8 @@
         curCell: {},
         search_data: {},
         search_url: {},
-        duty_columns: [] //当前部门拥有的duty（作为每一列的列头，例如duty1
+        duty_columns: [], //当前部门拥有的duty（作为每一列的列头，例如duty1
+        msg:''
       };
     },
     watch: {
@@ -138,6 +142,7 @@
         //   }
         // });
         //不再使用ajax的方式，改为axios的方式
+        this.$Message.info('加载值班信息')
         getScheduleList(search_condition).then(res => {
           var data = res.data;
           //此处需要先判断返回的res.data是否为空
@@ -165,9 +170,10 @@
 
                 myself.table_data.push(temp_duty);
               });
+              myself.showMsg()
             }
           }
-
+          
           //初始化下拉菜单
           this.init_Select();
           //加载table表
@@ -176,7 +182,10 @@
           this.init_control();
         });
       },
-
+      showMsg:function(msg){
+        // this.$refs.myMsg.info()
+        this.$Message.info("显示")
+      },
       defaultData() {
         var id = "-999";
       },
@@ -594,6 +603,7 @@
           onEditableSave: function (field, row, oldValue, $el) {},
           onClickRow: function (row, $element) {
             myself.curRow = row;
+            console.log(row)
           },
           onClickCell: (field, value, row, $elemen) => {
             myself.curCell = {
@@ -601,6 +611,7 @@
               value: value,
               row: row
             };
+            myself.curRow=row;
           },
           onPageChange: function (params) {
             myself.init_control();

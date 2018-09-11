@@ -9,17 +9,18 @@
               <div class="login-wrap-my">
                 <!-- <span>用户名</span> -->
                 <label for="exampleInputName2">用户名</label>
-                <input type="text" v-model="userName" class="form-control" id="exampleInputName2" placeholder="用户名">
+                <input type="text" v-model="userName" class="form-control" placeholder="用户名">
               </div>
               <div class="login-wrap-my">
                 <!-- <span>用户名</span> -->
                 <label for="exampleInputName2">密码</label>
-                <input type="password" v-model="parseWord" class="form-control" id="exampleInputName2" placeholder="密码">
+                <input type="password" v-model="parseWord" class="form-control" placeholder="密码">
               </div>
               <div class="login-wrap-my">
                 <div class="login-form-btn">
                   <div class="login-btn-div"></div>
-                  <button class="login-btn" @click="login">登录</button>
+                  <!-- <button class="login-btn" @click="login">登录</button> -->
+                  <input class="login-btn" id="jsLoginBtn" type="button" @click="login" value="登录">
                 </div>
 
               </div>

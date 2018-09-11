@@ -1,4 +1,5 @@
-/* * @Author: casablca * *@Date: 2018-05-23 08:55:48 * * @Last Modified by: mikey.zhaopeng * @Last Modified time: 2018-05-23
+/* * @Author: casablca * *@Date: 2018-05-23 08:55:48 * * @Last Modified by: mikey.zhaopeng * @Last Modified time:
+2018-05-23
 12:13:02 08:56:13 */
 
 <template>
@@ -34,17 +35,18 @@
                     </div> -->
             <div class="form-group">
               日期
-              <div class="input-group date form_date col-md-8" data-date="" data-date-format="yyyy MM dd  " data-link-field="dtp_input2"
-                data-link-format="yyyy-mm-dd">
+              <div class="input-group date form_date col-md-8" data-date="" data-date-format="yyyy MM dd  "
+                data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                 <input id="datetimepicker" class="form-control" size="12" type="text" value="">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
               <input type="hidden" id="dtp_input2" value="" />
-              <br/>
+              <br />
             </div>
             <button type="button" class="btn btn-default mt-5" v-on:click="summit()">查询</button>
+            <button type="button" class="btn btn-default mt-5" v-on:click="testInfo()">info</button>
           </div>
         </form>
 
@@ -75,7 +77,7 @@
     },
     data: function () {
       return {
-        host:'http://127.0.0.1:8000/',
+        host: 'http://127.0.0.1:8000/',
         // host: 'http://128.5.9.20:8015',
         selected_user: 1,
         options_user: [],
@@ -152,7 +154,10 @@
             // this.selected_date = value;
           });
       },
-
+      testInfo: function () {
+        // this.$Message.info('This is a info tip');
+        this.$Message.success('测试成功');
+      },
       //暂时不用
       modifiedDate: function (date_val) {
         // this.selected_date=date_val;
@@ -285,6 +290,7 @@
     padding: 15px;
     padding-bottom: 0px;
   }
+
   /* #searchbar{
   padding-bottom: 0px;
 } */
