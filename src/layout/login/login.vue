@@ -2,21 +2,21 @@
   <div id="my-form">
     <div class="my-container">
       <div class="login-box">
-        <div class="login-form">
+        <div class="login-form-my">
           <form>
             <div>
-              <span class="login-title">值班系统</span>
-              <div class="login-wrap">
+              <span class="login-title-my">值班系统</span>
+              <div class="login-wrap-my">
                 <!-- <span>用户名</span> -->
                 <label for="exampleInputName2">用户名</label>
                 <input type="text" v-model="userName" class="form-control" id="exampleInputName2" placeholder="用户名">
               </div>
-              <div class="login-wrap">
+              <div class="login-wrap-my">
                 <!-- <span>用户名</span> -->
                 <label for="exampleInputName2">密码</label>
-                <input type="text" v-model="parseWord" class="form-control" id="exampleInputName2" placeholder="密码">
+                <input type="password" v-model="parseWord" class="form-control" id="exampleInputName2" placeholder="密码">
               </div>
-              <div class="login-wrap">
+              <div class="login-wrap-my">
                 <div class="login-form-btn">
                   <div class="login-btn-div"></div>
                   <button class="login-btn" @click="login">登录</button>
@@ -138,11 +138,11 @@
     padding-bottom: 45px;
   }
 
-  .login-form {
+  .login-form-my {
     width: 100%;
   }
 
-  .login-title {
+  .login-title-my {
     display: block;
     font-family: Poppins-Bold;
     font-size: 39px;
@@ -151,13 +151,13 @@
     text-align: center;
   }
 
-  .login-wrap {
+  .login-wrap-my {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
   }
 
-  .login-wrap>input {
+  .login-wrap-my>input {
     font-family: Poppins-Medium;
     font-size: 16px;
     color: #333333;
