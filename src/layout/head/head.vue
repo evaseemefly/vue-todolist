@@ -29,14 +29,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Action</a>
-                            </li>
-                            <li>
-                                <a href="#">Another action</a>
-                            </li>
-                            <li>
-                                <a href="#">Something else here</a>
-                            </li>
+                                <a href="#"></a>
+                            </li>                            
                         </ul>
                     </li>
                 </ul>
