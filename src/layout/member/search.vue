@@ -46,7 +46,7 @@
               <br />
             </div>
             <button type="button" class="btn btn-default mt-5" v-on:click="summit()">查询</button>
-            <button type="button" class="btn btn-default mt-5" v-on:click="testInfo()">info</button>
+            <!-- <button type="button" class="btn btn-default mt-5" v-on:click="testInfo()">info</button> -->
           </div>
         </form>
 
@@ -60,6 +60,9 @@
 
 <script>
   import bus from "../../assets/eventBus.js";
+  import {
+    getGroupAndUser
+  } from "../../api/api";
   // import bus from "../assets/eventBus";
   // import vue from 'vue'
   export default {
@@ -231,43 +234,51 @@
           department_id: this.did
         };
         var dict_users = {};
-        $.ajax({
-          type: "GET",
-          url: get_groupAnduser_url,
-          dataType: "json",
-          data: post_data,
-          async: false,
-          success: function (data) {
-            /*
-                            1、遍历一级，存入group中
-                            2、
-                          */
-            data_get = data;
-          }
-        }).then(function (data) {});
+
         // dict_users = {};
         var options_group = [];
         // options_group = this.options_group;
         var dict_users = this.dict_users;
-        $.map(data_get, function (obj) {
-          options_group.push({
-            text: obj.name,
-            value: obj.did
+
+        getGroupAndUser(post_data).then(res => {
+          console.log(res)
+          data_get = res;
+          $.map(data_get, function (obj) {
+            options_group.push({
+              text: obj.name,
+              value: obj.did
+            });
+            if (obj.uid.length > 1) {
+              dict_users[obj.did] = obj.uid;
+            }
           });
-          if (obj.uid.length > 1) {
-            dict_users[obj.did] = obj.uid;
-          }
-        });
-        this.options_group = options_group;
-        this.dict_users = dict_users;
-        //每次获取时需要清空当前options_user的列表
-        myself.options_user = [];
-        $.each(data_get[0].uid, (index, val) => {
-          myself.options_user.push({
-            text: val.username,
-            value: val.uid
+          this.options_group = options_group;
+          this.dict_users = dict_users;
+          //每次获取时需要清空当前options_user的列表
+          myself.options_user = [];
+          $.each(data_get[0].uid, (index, val) => {
+            myself.options_user.push({
+              text: val.username,
+              value: val.uid
+            });
           });
-        });
+        })
+        // $.ajax({
+        //   type: "GET",
+        //   url: get_groupAnduser_url,
+        //   dataType: "json",
+        //   data: post_data,
+        //   async: false,
+        //   success: function (data) {
+        //     /*
+        //                     1、遍历一级，存入group中
+        //                     2、
+        //                   */
+        //     data_get = data;
+        //   }
+        // }).then(function (data) {});
+
+
       }
     },
 

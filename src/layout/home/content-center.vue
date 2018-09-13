@@ -51,7 +51,8 @@
   import {
     getScheduleList,
     addSchedule,
-    delSchedule
+    delSchedule,
+    getDutySelect
   } from "../../api/api.js";
   export default {
     props: ["searchResult"],
@@ -79,7 +80,7 @@
         search_data: {},
         search_url: {},
         duty_columns: [], //当前部门拥有的duty（作为每一列的列头，例如duty1
-        msg:''
+        msg: ''
       };
     },
     watch: {
@@ -170,10 +171,13 @@
 
                 myself.table_data.push(temp_duty);
               });
-              myself.showMsg()
+              this.$Message.success("加载成功")
+              // myself.showMsg()
+            } else {
+              this.$Message.error("加载失败")
             }
           }
-          
+
           //初始化下拉菜单
           this.init_Select();
           //加载table表
@@ -182,7 +186,7 @@
           this.init_control();
         });
       },
-      showMsg:function(msg){
+      showMsg: function (msg) {
         // this.$refs.myMsg.info()
         this.$Message.info("显示")
       },
@@ -257,7 +261,11 @@
         });
 
         var post_data = this.convert_data(row);
-        addSchedule(post_data);
+        addSchedule(post_data).then(res => {
+          this.$Message.info('提交成功')
+        }).catch(err => {
+          this.$Message.error('提交失败')
+        })
         this.init_Select();
         this.destroyTable();
         // this.submitData(post_data);
@@ -342,8 +350,11 @@
         // );
 
         delSchedule(post_data).then(res => {
+          this.$Message.info("删除成功")
           $("#tb_user").bootstrapTable("destroy");
           this.loadTable(myself.search_url, myself.search_data);
+        }).catch(err => {
+          this.$Message.error("删除失败")
         })
 
       },
@@ -378,7 +389,14 @@
 
         var post_data = convert_data(temp_newdata);
 
-        this.submitData(post_data, url_post);
+        //2018-09-12 注释掉此种方式，使用封装至api中的方法
+        // this.submitData(post_data, url_post);
+
+        addSchedule(post_data).then(res => {
+          this.$Message.success("提交成功")
+        }).catch(err => {
+          this.$Message.error("提交错误")
+        })
         // this.init_control();
         // this.init_User_Select();
         // this.loadTable()
@@ -447,7 +465,7 @@
           // 修改后的日期
           duty_data.dutydate = params.value;
           // 之前的日期
-          duty_data.old_date=myself.curRow.dutydate
+          duty_data.old_date = myself.curRow.dutydate
         }
         // console.log(duty_data);
         //duty_data.modity_id = params.value;
@@ -611,7 +629,7 @@
               value: value,
               row: row
             };
-            myself.curRow=row;
+            myself.curRow = row;
           },
           onPageChange: function (params) {
             myself.init_control();
@@ -626,43 +644,48 @@
         var myself = this;
         var url_duty_select = `${myself.host}/duty/dutylist/`;
         //2 ajax请求后台获取当前组的岗位
-        $.ajax({
-          type: "GET",
-          //url: "data_duty.json",
-          url: url_duty_select,
-          processData: true,
-          dataType: "json",
-          async: false,
-          data: myself.user_data,
-          traditional: true, //data中传入数组
-          success: function (data) {
-            //注意要先复原
-            myself.select_duty_source = [];
-            myself.columns_duty = [];
+        //现改为在api中使用axios
+        getDutySelect(myself.user_data).then(data => {
+          //注意要先复原
+          myself.select_duty_source = [];
+          myself.columns_duty = [];
+          myself.columns_duty.push({
+            field: "dutydate",
+            title: "日期",
+            editable: true,
+            formatter: myself.tablerowDate
+          });
+          $.each(data.data, function (index, obj) {
+            //分别向下拉框数组以及table的列表头数组中添加岗位信息
+            myself.select_duty_source.push({
+              value: obj.duid,
+              text: obj.dutyname
+            });
             myself.columns_duty.push({
-              field: "dutydate",
-              title: "日期",
+              field: "duty" + obj.duid,
+              title: obj.dutyname,
               editable: true,
-              formatter: myself.tablerowDate
+              formatter: myself.tablerowUserEdit
             });
-            $.each(data, function (index, obj) {
-              //分别向下拉框数组以及table的列表头数组中添加岗位信息
-              myself.select_duty_source.push({
-                value: obj.duid,
-                text: obj.dutyname
-              });
-              myself.columns_duty.push({
-                field: "duty" + obj.duid,
-                title: obj.dutyname,
-                editable: true,
-                formatter: myself.tablerowUserEdit
-              });
-              myself.duty_columns.push("duty" + obj.duid);
-              //刷新岗位字典
-              myself.select_duty_dict[obj.duid] = obj.dutyname;
-            });
-          }
-        });
+            myself.duty_columns.push("duty" + obj.duid);
+            //刷新岗位字典
+            myself.select_duty_dict[obj.duid] = obj.dutyname;
+          });
+        })
+
+        // $.ajax({
+        //   type: "GET",
+        //   //url: "data_duty.json",
+        //   url: url_duty_select,
+        //   processData: true,
+        //   dataType: "json",
+        //   async: false,
+        //   data: myself.user_data,
+        //   traditional: true, //data中传入数组
+        //   success: function (data) {
+        //       console.log(data)
+        //   }
+        // });
       },
 
       init_Select() {

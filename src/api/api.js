@@ -63,6 +63,20 @@ const getScheduleList = data => {
   });
 }
 
+//暂时未用
+export const getGroupAndUser = data => {
+  return axios.get(`${host}/duty/grouplist/`, {
+    params: data
+  })
+};
+
+//获取duty列表
+export const getDutySelect= data=>{
+  return axios.get(`${host}/duty/dutylist/`,{
+    params:data
+  })
+}
+
 //删除某一日的值班信息
 export const delSchedule = data => {
   return axios.post(`${host}/duty/schedulelist/del/`, data);

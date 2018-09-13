@@ -18,6 +18,8 @@ import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.css'
 import './components/css/bootstrapExt/table/bootstrap-table.css'
 import './components/css/bootstrapExt/editable/bootstrap-editable.css'
+// iview的样式
+import 'iview/dist/styles/iview.css'
 import 'bootstrap/dist/js/bootstrap.js'
 
 // import './components/css/background.css'
@@ -50,7 +52,7 @@ Vue.prototype.$echarts=echarts;
 import './components/css/flatui/flat-ui.css'
 // 加入iview
 import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+
 // require('bootstrap-loader')
 // require('bootstrap')
 
