@@ -73,7 +73,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     #ul_nav {
         position: fixed;
         left: 0px;

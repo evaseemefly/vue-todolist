@@ -7,9 +7,9 @@
             <button id="btn_delete" type="button" class="btn btn-danger" @click="del_row">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true" ></span>删除
             </button>
-            <button id="btn_delete" type="button" class="btn btn-danger" @click="init_targetMonthTable">
+            <!-- <button id="btn_delete" type="button" class="btn btn-danger" @click="init_targetMonthTable">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true" ></span>初始化
-            </button>
+            </button> -->
         </div>
     </div>
 </template>
