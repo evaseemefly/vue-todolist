@@ -171,6 +171,7 @@
 
                 myself.table_data.push(temp_duty);
               });
+              // myself.init_Table()
               this.$Message.success("加载成功")
               // myself.showMsg()
             } else {
@@ -332,7 +333,7 @@
         // var post_url = "http://127.0.0.1:8000/duty/schedulelist/del/";
         var post_url = `${myself.host}/duty/schedulelist/del/`;
         var post_data = {};
-        var myself = this;
+        // var myself = this;
         var target_date = this.curRow.dutydate;
         post_data.target_date = target_date;
         post_data.group_id = this.group_id;
@@ -773,6 +774,7 @@
         // console.log(data);
         this.user_data = new Object();
 
+        myself.destroyTable()
         // myself.group_id = data.group.value;
         myself.group_id = data.group_id_new;
         myself.group = data.group;
@@ -780,10 +782,11 @@
         myself.search_url = url;
         //注意此处需要对当前的append_last_date赋值，将由search传递过来的selected_date，赋给他
         myself.append_last_date = data.selected_date;
+        // myself.init_Duty_Select();
         //提取到外侧，不放在loadTable中调用了
-        // myself.init_Select();
+        myself.init_Select();
         //直接调用loadTable方法，loadTable最后会执行init_control()方法
-        myself.loadTable(url, data);
+        myself.loadTable(myself.search_url, myself.search_data);
       });
       bus.$on("on-clearData", function () {
         myself.clearData();
