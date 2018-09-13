@@ -5,7 +5,9 @@ import Vue from 'vue'
 // import 'vue/dist/vue.js'
 import App from './app.vue'
 import VueRouter from 'vue-router'
-import Routers from '../router';
+import Routers from './router/router';
+// import Routers from '../router';
+
 import $ from 'jquery'
 // import 'bootstrap/dist/css/bootstrap.min.css'  
 // import 'bootstrap/dist/js/bootstrap.min'  
@@ -67,4 +69,4 @@ new Vue({
     //     h(App);
     // }
 }).$mount(root)     //$mount为vue中的手动挂载
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)

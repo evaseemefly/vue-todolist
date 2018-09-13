@@ -144,7 +144,7 @@ const config = {
 }
 
 config.devServer = {
-    port: 8011,
+    port: 8015,
     host: '0.0.0.0',  //注意，ip地址是字符串
     overlay: { // 如果有任何的错误，就让它显示到网页上
         errors: true
