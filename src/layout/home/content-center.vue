@@ -62,8 +62,8 @@
     },
     data() {
       return {
-        host: 'http://127.0.0.1:8000',
-        // host: 'http://128.5.9.20:8015',
+        // host: 'http://127.0.0.1:8000',
+        host: 'http://128.5.9.20:8015',
         schedulelist: [],
         select_user_dict: {}, //值班人员字典
         select_duty_dict: {}, //岗位职责字典

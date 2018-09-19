@@ -1,8 +1,8 @@
 import axios from 'axios';
 import cookie from '../common/js/cookie';
 
-// let host = 'http://128.5.9.20:8015';
-let host = 'http://127.0.0.1:8000';
+let host = 'http://128.5.9.20:8015';
+// let host = 'http://127.0.0.1:8000';
 axios.defaults.withCredentials = true;
 // http request 拦截器
 axios.interceptors.request.use(

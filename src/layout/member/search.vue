@@ -75,8 +75,8 @@ export default {
   },
   data: function() {
     return {
-      host: "http://127.0.0.1:8000/",
-      // host: 'http://128.5.9.20:8015',
+      // host: "http://127.0.0.1:8000/",
+      host: 'http://128.5.9.20:8015',
       selected_user: 1,
       options_user: [],
       selected_group: 2,
