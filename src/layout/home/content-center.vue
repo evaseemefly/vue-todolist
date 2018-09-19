@@ -52,7 +52,8 @@
     getScheduleList,
     addSchedule,
     delSchedule,
-    getDutySelect
+    getDutySelect,
+    getUserList
   } from "../../api/api.js";
   export default {
     props: ["searchResult"],
@@ -180,7 +181,7 @@
           }
 
           //初始化下拉菜单
-          this.init_Select();
+          // this.init_Select();
           //加载table表
           this.init_Table();
           //
@@ -572,28 +573,43 @@
         // 1 ajax请求后台获取当前组的人员下拉框中成员
         this.user_data.group_id = [this.group_id];
         var myself = this;
-        $.ajax({
-          type: "GET",
-          //url: "data_user.json",
-          url: get_url,
-          processData: true,
 
-          data: myself.user_data,
-          dataType: "json",
-          async: false,
-          traditional: true, //data中传入数组
-          success: function (data) {
-            $.each(data, function (index, obj) {
-              //修改下拉框
-              myself.select_user_source.push({
-                value: obj.uid,
-                text: obj.username
-              });
-              //刷新人员字典
-              myself.select_user_dict[obj.uid] = obj.username;
+        //09-14 使用axios代替ajax
+        getUserList(myself.user_data).then(res => {
+          // console.log(res)
+
+          $.each(res.data, function (index, obj) {
+            //修改下拉框
+            myself.select_user_source.push({
+              value: obj.uid,
+              text: obj.username
             });
-          }
-        });
+            //刷新人员字典
+            myself.select_user_dict[obj.uid] = obj.username;
+          });
+        })
+        // $.ajax({
+        //   type: "GET",
+        //   //url: "data_user.json",
+        //   url: get_url,
+        //   processData: true,
+
+        //   data: myself.user_data,
+        //   dataType: "json",
+        //   async: false,
+        //   traditional: true, //data中传入数组
+        //   success: function (data) {
+        //     $.each(data, function (index, obj) {
+        //       //修改下拉框
+        //       myself.select_user_source.push({
+        //         value: obj.uid,
+        //         text: obj.username
+        //       });
+        //       //刷新人员字典
+        //       myself.select_user_dict[obj.uid] = obj.username;
+        //     });
+        //   }
+        // });
       },
 
       init_Table() {
@@ -689,13 +705,15 @@
         // });
       },
 
+      //初始化岗位以及人员下拉框
       init_Select() {
         // 1、通过ajax请求对 用户 及 岗位 的下拉框进行初始化
         this.init_User_Select();
         this.init_Duty_Select();
         // console.log(this.select_duty_source);
       },
-
+      
+      //初始化行内编辑框
       init_control() {
         //初始化下拉框
         var myself = this;
