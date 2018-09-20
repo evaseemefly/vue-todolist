@@ -77,12 +77,22 @@ const RouterConfig = {
 const router = new VueRouter(RouterConfig);
 
 
+// new Vue({
+//     //使用箭头语法等同于下面的写法
+//     el:'#app',
+//     template:'<App/>',
+//     components:{App},  
+//     // render:function(h){
+//     //     h(App);
+//     // }
+//     router:router
+// })
+
 new Vue({
-    //使用箭头语法等同于下面的写法
-    render:(h)=>h(App),
-    router:router
+    //使用箭头语法等同于下面的写法    
+    render:(h)=>h(App),    
     // render:function(h){
     //     h(App);
     // }
+    router:router
 }).$mount(root)     //$mount为vue中的手动挂载
-// console.log(process.env.NODE_ENV)

@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true
 axios.interceptors.request.use(
 	config => {
 		let token = cookie.getCookie('token')
-		console.log(token)
+		// console.log(token)
 		if (token) {
 			// 判断是否存在token，如果存在的话，则每个http header都加上token
 			config.headers.authorization = `JWT ${token}`

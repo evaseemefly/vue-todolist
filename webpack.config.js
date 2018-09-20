@@ -14,10 +14,19 @@ const config = {
 
     // },
     target:'web',
-    entry: path.join(__dirname, 'src/index.js'),
+    // 以下方式会出错
+    // entry: {
+	// 	// app: path.resolve(__dirname,'./src/main.js'),
+	// 	index: './src/index.js',
+	// },
+    entry: path.join(__dirname, '/src/index.js'),
+    // entry: path.join(__dirname, 'src/index.js'),
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        // path:'/dist'
+        
+
     },
 
     resolve: {
