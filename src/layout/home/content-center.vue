@@ -635,7 +635,8 @@ export default {
         queryParams: function(param) {
           return search_condition;
         },
-
+        showExport: true, //是否显示导出
+        exportDataType: "basic", //basic', 'all', 'selected'.
         columns: myself.columns_duty,
         data: myself.table_data,
         onEditableSave: function(field, row, oldValue, $el) {},
@@ -761,7 +762,7 @@ export default {
               -4 根据该索引获取到该obj，
                  并根据field修改对应的值
             */
-           
+
           //注意提交的同时，需要从this.table_data中找到当前修改的obj
           // 找到当前行的curRow.dutydate
           // 根据日期找到修改的值
