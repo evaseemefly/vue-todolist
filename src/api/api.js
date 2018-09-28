@@ -1,8 +1,8 @@
 import axios from 'axios'
 import cookie from '../common/js/cookie'
 
-let host = 'http://128.5.9.20:8015'
-// let host = 'http://127.0.0.1:8000'
+// let host = 'http://128.5.9.20:8015'
+let host = 'http://127.0.0.1:8000'
 axios.defaults.withCredentials = true
 // http request 拦截器
 axios.interceptors.request.use(
@@ -51,6 +51,11 @@ export const getAuthDetail = parmas => {
 
 export const getDepDutyList = paramas => {
 	return axios.get(`${host}/user/duthdepdutylist/`)
+}
+
+//获取指定部门（组）在指定时间范围内的每日的值班人数
+export const getDepartmentStatistics=paramas=>{
+	return axios.get(`${host}/duty/departmentStatistics`,{params:paramas,})
 }
 
 export /**

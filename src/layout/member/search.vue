@@ -172,6 +172,7 @@ export default {
 		// },
 
 		//按照搜索条件进行搜索
+		// 并加载calendar 日历
 		summit: function() {
 			var myself = this
 			var search_url = `${myself.host}duty/schedulelist/`
@@ -209,10 +210,14 @@ export default {
 				groups_id: [myself.selected_group],
 				// group_name: select_group_name,
 				selected_date: myself.selected_date,
+				
+				isMonth:true
 			}
+
+			
 			//每次提交时，先清空content组件的data
 			bus.$emit('on-clearData')
-
+			bus.$emit('on-loadCalendar',search_temp)
 			bus.$emit('on-loadTable', search_url, search_temp)
 		},
 
