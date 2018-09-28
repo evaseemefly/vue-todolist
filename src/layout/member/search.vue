@@ -211,7 +211,7 @@ export default {
 				// group_name: select_group_name,
 				selected_date: myself.selected_date,
 				
-				isMonth:true
+				isMonth:1
 			}
 
 			
