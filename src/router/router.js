@@ -10,6 +10,9 @@ const routers=[
     {
         path:'/home',
         name:'home',
+        meta:{
+            title:'首页'
+        },
         component:home,
         children:[
             {
@@ -22,7 +25,10 @@ const routers=[
     },
     {
         path:'/login',
-        component:login        
+        component:login,
+        meta:{
+            title:'值班系统'
+        }        
     }    
 ];
 export default routers;

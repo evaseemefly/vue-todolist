@@ -7,6 +7,8 @@ const VueLoaderPlugin=require('vue-loader/lib/plugin')
 
 const isDev = process.env.NODE_ENV === 'development' //我们在package.json中设置的环境变量，全部是存放在process.env中的
 
+//项目根目录
+const root=path.resolve(__dirname,'..')
 
 const config = {
     // model:'development',
@@ -14,10 +16,20 @@ const config = {
 
     // },
     target:'web',
-    entry: path.join(__dirname, 'src/index.js'),
+    // 以下方式会出错
+    // entry: {
+	// 	// app: path.resolve(__dirname,'./src/main.js'),
+	// 	index: './src/index.js',
+	// },
+    entry: path.join(__dirname, '/src/index.js'),
+    // entry: path.join(__dirname, 'src/index.js'),
     output: {
-        filename: 'bundle.js',
-        path: path.join(__dirname, 'dist')
+        filename: 'bundle.js',  //出口文件名
+        path: path.join(__dirname, 'dist'),
+        // path:path.join(root,'dist'), //出口目录
+        // path:'/dist'
+        
+
     },
 
     resolve: {

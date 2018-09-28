@@ -14,10 +14,18 @@
                         <!-- <a href="#" @click="changeIndex(index)">{{group.department.derpartmentname}}
                             <span class="sr-only">(current)</span>
                         </a> -->
+                        <!-- 0918 重新修改 -->
+                        <!-- 方式1：可行 -->
+                        <!-- <router-link :to="{name:'content',path:'content',params:{did:group.department.did}}"
+                            @click.native="changeIndex(index)"> {{group.department.derpartmentname}}
+                            <span class="sr-only">(current)</span>
+                        </router-link> -->
+
                         <router-link :to="{name:'content',path:'content',params:{did:group.department.did}}"
                             @click.native="changeIndex(index)"> {{group.department.derpartmentname}}
                             <span class="sr-only">(current)</span>
                         </router-link>
+
                         <!-- <router-link to="/home/content/4"
                             @click.native="changeIndex(index)"> {{group.department.derpartmentname}}
                             <span class="sr-only">(current)</span>
@@ -29,14 +37,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">Action</a>
-                            </li>
-                            <li>
-                                <a href="#">Another action</a>
-                            </li>
-                            <li>
-                                <a href="#">Something else here</a>
-                            </li>
+                                <a href="#"></a>
+                            </li>                            
                         </ul>
                     </li>
                 </ul>
@@ -105,8 +107,8 @@
         mounted: function () {
             this.name = cookie.getCookie("name");
             this.token = cookie.getCookie("token");
-            console.log(this.name);
-            console.log(this.token);
+            // console.log(this.name);
+            // console.log(this.token);
             // this.name = cookie.getCookie("name");
         }
     };

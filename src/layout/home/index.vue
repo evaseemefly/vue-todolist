@@ -14,6 +14,7 @@
 <script>
   // import Header from "./layout/header.vue";
   import Search from "../member/search.vue";
+  // import mycontent from "./content-main";
   import mycontent from "./content-main.vue";
   import leftmenu from "../left/left-menu.vue";
   // import lefcalendar from "../left/left-calendar.vue";
@@ -50,7 +51,7 @@
       getdepdutylist: function () {
         var myself=this;
         //获取当前的cookie
-        console.log(cookie.getCookie('token'));
+        // console.log(cookie.getCookie('token'));
         getDepDutyList().then(function (res) {
           console.log(res);
           myself.departments = res.data;
@@ -69,6 +70,11 @@
     },
     mounted: function () {
       this.getdepdutylist();
+    },
+    watch:{
+      '$route'(to,from){
+        // alert('路由刷新')
+      }
     }
   };
 </script>

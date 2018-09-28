@@ -21,6 +21,11 @@
 
 <script>
     // var echarts = require('echarts/lib/echarts')
+    //记得要引入bus
+    import bus from "../../assets/eventBus.js"
+    import {
+        getDepartmentStatistics
+    } from "../../api/api.js"
     export default {
         data: function () {
             return {
@@ -169,6 +174,12 @@
                     // }
                 ]
             };
+
+            bus.$on("on-loadCalendar",function(data){
+                getDepartmentStatistics(data).then(res=>{
+                    console.log(res)
+                })
+            })
 
             myChart.setOption(option);
             this.loadTable();
