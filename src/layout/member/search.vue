@@ -58,6 +58,8 @@
 <script>
 import bus from '../../assets/eventBus.js'
 import { getGroupAndUser } from '../../api/api'
+
+import {mapGetters,mapMutations} from 'vuex';
 // import bus from "../assets/eventBus";
 // import vue from 'vue'
 export default {
@@ -120,6 +122,10 @@ export default {
 		},
 	},
 	methods: {
+		...mapMutations({
+			setNow:'SET_NOW'
+		}),
+
 		//对搜索框中的日期进行初始化
 		dateDefind: function() {
 			var d, s
@@ -298,6 +304,8 @@ export default {
 			//   });
 			// });
 		},
+
+
 	},
 
 	mounted: function() {

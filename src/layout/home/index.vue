@@ -24,6 +24,8 @@
     getDepDutyList
   } from "../../api/api";
   import cookie from "../../common/js/cookie.js";
+
+  import {mapGetters,mapMutations,mapActions} from 'vuex';
   // var bus=new Vue({
 
   // });
@@ -47,6 +49,10 @@
       myheader
     },
     methods: {
+      ...mapMutations({
+
+        setNow:'SET_NOW'
+      }),
       //获取部门及群组的列表
       getdepdutylist: function () {
         var myself=this;
@@ -60,6 +66,10 @@
         //   getDepDutyList().then(function(res) {
         //     console.log(res);
         //   });
+
+        mapMutations({
+          setNow:'SET_NOW'
+        })
       },
       changeIndex:function(index){
         // alert(`子组件传递过来的值 ${index}`);
@@ -67,9 +77,13 @@
         this.group_index=index;
         this.groups=this.departments[this.group_index];
       }
+
     },
     mounted: function () {
+      var myself=this;
       this.getdepdutylist();
+      this.setNow(new Date());
+      console.log(myself.$store.getters.nowDate)
     },
     watch:{
       '$route'(to,from){

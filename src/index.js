@@ -6,6 +6,10 @@ import Vue from 'vue'
 import App from './app.vue'
 import VueRouter from 'vue-router'
 import Routers from './router/router';
+//引入vuex
+// 放在store/store.js中
+// import Vuex from 'vuex';
+import store from './store/index';
 // import Routers from '../router';
 
 import $ from 'jquery'
@@ -65,6 +69,8 @@ import iView from 'iview'
 Vue.prototype.moment=moment
 Vue.config.devtools=true;
 Vue.use(VueRouter)
+//引入vuex
+// Vue.use(Vuex)
 Vue.use(iView)
 const root=document.createElement("div")
 document.body.appendChild(root)
@@ -83,6 +89,9 @@ const RouterConfig = {
 };
 const router = new VueRouter(RouterConfig);
 
+// const store=new Vuex.Store({
+
+// })
 
 // new Vue({
 //     //使用箭头语法等同于下面的写法
@@ -103,7 +112,8 @@ new Vue({
     // render:function(h){
     //     h(App);
     // }
-    router:router
+    router:router,
+    store:store
 }).$mount(root)     //$mount为vue中的手动挂载
 
 // 使用以下方式配置，暂时有问题
