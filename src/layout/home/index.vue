@@ -14,6 +14,7 @@
 <script>
   // import Header from "./layout/header.vue";
   import Search from "../member/search.vue";
+  // import mycontent from "./content-main";
   import mycontent from "./content-main.vue";
   import leftmenu from "../left/left-menu.vue";
   // import lefcalendar from "../left/left-calendar.vue";
@@ -23,6 +24,8 @@
     getDepDutyList
   } from "../../api/api";
   import cookie from "../../common/js/cookie.js";
+
+  import {mapGetters,mapMutations,mapActions} from 'vuex';
   // var bus=new Vue({
 
   // });
@@ -46,11 +49,15 @@
       myheader
     },
     methods: {
+      ...mapMutations({
+
+        setNow:'SET_NOW'
+      }),
       //获取部门及群组的列表
       getdepdutylist: function () {
         var myself=this;
         //获取当前的cookie
-        console.log(cookie.getCookie('token'));
+        // console.log(cookie.getCookie('token'));
         getDepDutyList().then(function (res) {
           console.log(res);
           myself.departments = res.data;
@@ -59,6 +66,10 @@
         //   getDepDutyList().then(function(res) {
         //     console.log(res);
         //   });
+
+        mapMutations({
+          setNow:'SET_NOW'
+        })
       },
       changeIndex:function(index){
         // alert(`子组件传递过来的值 ${index}`);
@@ -66,9 +77,18 @@
         this.group_index=index;
         this.groups=this.departments[this.group_index];
       }
+
     },
     mounted: function () {
+      var myself=this;
       this.getdepdutylist();
+      this.setNow(new Date());
+      console.log(myself.$store.getters.nowDate)
+    },
+    watch:{
+      '$route'(to,from){
+        // alert('路由刷新')
+      }
     }
   };
 </script>
