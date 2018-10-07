@@ -6,9 +6,10 @@
 
 // }
 
-const state={
-    // baseInfo,
-    now:{}
-}
+const state = {
+  // baseInfo,
+  now: {},
+  isMonth: true
+};
 
 export default state;
