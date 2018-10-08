@@ -11,7 +11,7 @@
         <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
         <div id="calendar" style="height:400px;width: 400px;"></div>
         <div class="">
-            <div class="panel-heading">8月份</div>
+            <div class="panel-heading">{{nowDateStr}}</div>
             <div class="panel-body table-parent-panel">
                 <table id="table_statistics"></table>
             </div>
@@ -44,6 +44,10 @@ export default {
     ...mapGetters(["nowDate"], ["isMonth"]),
     nowDate() {
       return this.$store.state.now;
+    },
+    nowDateStr(){
+      var myself=this;
+      return getDateByStr(myself.nowDate, myself.isMonth);
     },
     isMonth() {
       return this.$store.state.isMonth;
@@ -96,11 +100,11 @@ export default {
       //   var myChart = myself.$echarts.init(document.getElementById("calendar"));
       // 设置日历中月份与series中的data
       myself.myChart.setOption({
-        // calendar: [
-        //   {
-        //     range: [dateStr]
-        //   }
-        // ],
+        calendar: [
+          {
+            range: [dateStr]
+          }
+        ],
         series: [
           {
             name: "person_num",
@@ -122,6 +126,15 @@ export default {
     },
     nowDate: function(newVal, oldVal) {
       console.log(newVal, oldVal);
+      var myself=this;
+      // myself.myChart;
+      // myself.myChart.setOption({
+      //   calendar: [
+      //     {
+      //       range: [myself.nowDateStr]
+      //     }
+      //   ]
+      // });
     },
     isMonth: function(newVal, oldVal) {
       console.log(newVal, oldVal);
@@ -184,7 +197,7 @@ export default {
           left: "center",
           orient: "vertical",
           cellSize: 40,
-          range: ["2018-08"], //此处需修改为自动修改为指定月份
+          // range: ["2018-08"], //此处需修改为自动修改为指定月份
           splitLine: {
             show: true,
             lineStyle: {
