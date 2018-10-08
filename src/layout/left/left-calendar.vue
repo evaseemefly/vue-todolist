@@ -23,9 +23,14 @@
 // var echarts = require('echarts/lib/echarts')
 //记得要引入bus
 import bus from "../../assets/eventBus.js";
+//引入一些传递的一些对象
+import { StaticsQueryInfo } from "../../api/common.js";
 //引入根据是否为月份截取date字符串的方法
 import { getDateByStr } from "../../common/js/setDate.js";
-import { getDepartmentStatistics } from "../../api/api.js";
+import {
+  getDepartmentStatistics,
+  getDepartmentScheduleStatisticsCount
+} from "../../api/api.js";
 import { mapGetters, mapMutations, Store } from "vuex";
 export default {
   data: function() {
@@ -33,7 +38,8 @@ export default {
       selected_date: "",
       selected_month: "",
       myChart: null,
-      personData: []
+      personData: [],
+      did: ""
       //   myChart: null
     };
   },
@@ -45,8 +51,8 @@ export default {
     nowDate() {
       return this.$store.state.now;
     },
-    nowDateStr(){
-      var myself=this;
+    nowDateStr() {
+      var myself = this;
       return getDateByStr(myself.nowDate, myself.isMonth);
     },
     isMonth() {
@@ -58,6 +64,12 @@ export default {
   },
   methods: {
     loadTable: function() {
+      var myself = this;
+      var queryParmas = new StaticsQueryInfo(myself.nowDateStr, myself.isMonth,myself.did);
+
+      getDepartmentScheduleStatisticsCount(queryParmas).then(res => {
+        console.log(res);
+      });
       $("#table_statistics").bootstrapTable({
         columns: [
           {
@@ -91,6 +103,7 @@ export default {
   watch: {
     // 思路：监听personData的变化，若personData发生变化后
     // 重新初始化日历插件
+    // 并且计算当前月份的各类岗位的总人数
     personData: function() {
       var myself = this;
       //获取当前选定的日期，并判断是否为月份
@@ -126,7 +139,10 @@ export default {
     },
     nowDate: function(newVal, oldVal) {
       console.log(newVal, oldVal);
-      var myself=this;
+      var myself = this;
+
+      // 加载下面的表格
+      myself.loadTable();
       // myself.myChart;
       // myself.myChart.setOption({
       //   calendar: [
@@ -141,10 +157,17 @@ export default {
     },
     now: function(val) {
       console.log(val);
+    },
+    $route: function() {
+      // alert('路由变化');
+      this.did = this.$route.params.did;
     }
   },
   mounted: function() {
     var myself = this;
+    //每次router跳转过来以后获取params.did
+    // 注意此处放在watch中，当路由发生变化时，修改当前的did注意此处放在watch中，当路由发生变化时，修改当前的did
+    myself.did = this.$route.params.did;
     // var myChart = this.$echarts.init(document.getElementById('calendar'))
 
     myself.myChart = myself.$echarts.init(document.getElementById("calendar"));
@@ -197,7 +220,7 @@ export default {
           left: "center",
           orient: "vertical",
           cellSize: 40,
-          // range: ["2018-08"], //此处需修改为自动修改为指定月份
+          range: [myself.nowDateStr], //此处需修改为自动修改为指定月份
           splitLine: {
             show: true,
             lineStyle: {
@@ -253,10 +276,13 @@ export default {
         }
         myself.personData = persons;
       });
+
+      
     });
 
     myself.myChart.setOption(option);
-    this.loadTable();
+    // 将加在table放在 on-loadCalendar中（加载日历的时候执行加载）
+    // this.loadTable();
   }
 };
 </script>

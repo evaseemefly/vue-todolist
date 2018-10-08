@@ -58,6 +58,11 @@ export const getDepartmentStatistics=paramas=>{
 	return axios.get(`${host}/duty/departmentStatistics`,{params:paramas,})
 }
 
+//根据时间，部门id获取该月份的岗位及人数
+export const getDepartmentScheduleStatisticsCount=params=>{
+	return axios.get(`${host}/duty/departmentScheduleStatistics`,{params:params,})
+}
+
 export /**
  *根据查询条件获取指定月份的全部值班信息
  *

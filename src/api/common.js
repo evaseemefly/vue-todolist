@@ -4,3 +4,11 @@ export class Message{
     this.level=level;
   }
 }
+
+export class StaticsQueryInfo{
+  constructor(selectedDate,isMonth=1,groupId){
+    this.selectedDate=selectedDate;
+    this.isMonth=isMonth;
+    this.groupId=groupId;
+  }
+}
