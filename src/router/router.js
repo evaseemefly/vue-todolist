@@ -18,7 +18,7 @@ const routers=[
             {
                 name:'content',
                 // path:'content/:did',
-                path:'content/:did',
+                path:'/home/content/:did',
                 component:content
             }
         ]

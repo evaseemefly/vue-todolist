@@ -39,7 +39,8 @@ export default {
       selected_month: "",
       myChart: null,
       personData: [],
-      did: ""
+      did: "",
+      dutyCountData: []
       //   myChart: null
     };
   },
@@ -65,38 +66,53 @@ export default {
   methods: {
     loadTable: function() {
       var myself = this;
-      var queryParmas = new StaticsQueryInfo(myself.nowDateStr, myself.isMonth,myself.did);
+      var queryParmas = new StaticsQueryInfo(
+        myself.nowDateStr,
+        myself.isMonth,
+        myself.did
+      );
 
       getDepartmentScheduleStatisticsCount(queryParmas).then(res => {
         console.log(res);
-      });
-      $("#table_statistics").bootstrapTable({
-        columns: [
-          {
-            field: "id",
-            title: "编号"
-          },
-          {
-            field: "duty",
-            title: "岗位"
-          },
-          {
-            field: "person_num",
-            title: "值班人数总计"
-          }
-        ],
-        data: [
-          {
-            id: 1,
-            duty: "主班",
-            person_num: "31"
-          },
-          {
-            id: 2,
-            duty: "副班",
-            person_num: "31"
-          }
-        ]
+        //每次记得清空
+        myself.dutyCountData=[];
+        $("#table_statistics").bootstrapTable("destroy");
+        //循环返回的结果，写入data dutyCountData中
+        for (var temp of res.data) {
+          myself.dutyCountData.push({
+            duty: temp.dutyname,
+            person_num: temp.count
+          });
+        }
+        $("#table_statistics").bootstrapTable({
+          columns: [
+            {
+              field: "id",
+              title: "编号"
+            },
+            {
+              field: "duty",
+              title: "岗位"
+            },
+            {
+              field: "person_num",
+              title: "值班人数总计"
+            }
+          ],
+          // data: [
+          //   {
+          //     id: 1,
+          //     duty: "主班",
+          //     person_num: "31"
+          //   },
+          //   {
+          //     id: 2,
+          //     duty: "副班",
+          //     person_num: "31"
+          //   }
+          // ]
+          data: myself.dutyCountData
+        });
       });
     }
   },
@@ -276,13 +292,15 @@ export default {
         }
         myself.personData = persons;
       });
-
-      
     });
 
     myself.myChart.setOption(option);
     // 将加在table放在 on-loadCalendar中（加载日历的时候执行加载）
     // this.loadTable();
+  },
+  //注意调用中央事件时，在页面销毁时注意注销掉
+  beforeDestroy(){
+    bus.$off("on-loadCalendar");
   }
 };
 </script>
